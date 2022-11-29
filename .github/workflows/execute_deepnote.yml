@@ -1,0 +1,20 @@
+# This is a basic workflow that is manually triggered and automatically triggered every 6 hours
+
+name: execute_deepnote
+
+on:
+  schedule:
+    # Runs every 6 hours
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+jobs:
+  deepnote_execute:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - run: date
+    # Runs a single command using the runners shell
+    - name: execute_deepnote
+      run: curl -X POST ${{ secrets.DEEPNOTE_URL }} -H ${{ secrets.DEEPNOTE_API_KEY }}
