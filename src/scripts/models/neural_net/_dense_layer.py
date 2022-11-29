@@ -14,17 +14,21 @@ class DenseLayer:
         _description_
     """
     def __init__(self, input_n, output_n, activation):
-        self.weights = np.random.rand(input_n, output_n)
+        # he initiliasation of weights and biases
+        n_avg = 1/2 (input_n + output_n)
+        sigma = 2 / n_avg
+        self.weights = np.random.normal(loc = 0, scale = sigma, size=(input_n, output_n))
 
-        self.biases = np.random.rand(output_n)
+        self.biases = np.zeros(shape=(output_n))
 
         if activation == 'leaky_relu':
             self.activation = leaky_relu
         elif activation == 'softmax':
             self.activation = softmax
         else:
-            raise NotImplementedError("Cannot find Activation Function. Choose from ['leaky_relu', 'softmax']")
+            raise NotImplementedError(f"{activation} not implmented yet. Choose from ['leaky_relu', 'softmax']")
 
+            
     def forward(self, X):
         """_summary_
 
@@ -42,7 +46,7 @@ class DenseLayer:
 
 
 def leaky_relu(z):
-    return np.where(z > 0, z, z * 0.1)
+    return np.where(z > 0, z, z * 0.01)
 
 def softmax(z):
     e = np.exp(z)
