@@ -2,20 +2,20 @@ import numpy as np
 
 
 class DenseLayer:
-    """_summary_
+    """Fully connected layer of a neural network
 
     Parameters
     ----------
-    input_n : _type_
-        _description_
-    output_n : _type_
-        _description_
-    activation : _type_
-        _description_
+    input_n : int
+        The amount of inputs to the DenseLayer
+    output_n : int
+        The amount of outputs to the DenseLayer
+    activation : str
+        The activation function to use for all of the neurons in the DenseLayer
     """
-    def __init__(self, input_n, output_n, activation):
+    def __init__(self, input_n: int, output_n: int, activation: str):
         # he initiliasation of weights and biases
-        n_avg = 1/2 (input_n + output_n)
+        n_avg = 1/2 * (input_n + output_n)
         sigma = 2 / n_avg
         self.weights = np.random.normal(loc = 0, scale = sigma, size=(input_n, output_n))
 
@@ -26,21 +26,23 @@ class DenseLayer:
         elif activation == 'softmax':
             self.activation = softmax
         else:
-            raise NotImplementedError(f"{activation} not implmented yet. Choose from ['leaky_relu', 'softmax']")
+            raise NotImplementedError(f"{activation} not implemented yet. Choose from ['leaky_relu', 'softmax']")
 
             
     def forward(self, X):
-        """_summary_
+        """Computes a single forward pass of the DenseLayer
 
         Parameters
         ----------
-        X : _type_
-            _description_
+        X : 2d ndarray
+            An n x p matrix of data points
+            where n is the number of data points and p is the number of features.
 
         Returns
         -------
-        _type_
-            _description_
+        2d ndarray
+            An n x output_n numpy array where n is the number of samples
+            and output_n is the number of neurons in the DenseLayer
         """
         return self.activation(X @ self.weights + self.biases)
 
