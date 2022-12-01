@@ -1,6 +1,6 @@
 import numpy as np
 from ._dense_layer import DenseLayer
-from rich.progress import Progress, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn, TimeRemainingColumn, MofNCompleteColumn
+from rich.progress import Progress, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn, TimeRemainingColumn, SpinnerColumn
 from typing import Union
 
 
@@ -8,7 +8,7 @@ from typing import Union
 # is this allowed???
 from sklearn.metrics import accuracy_score 
 
-progress = Progress(TextColumn("[progress.description]{task.description}"),MofNCompleteColumn(), BarColumn(),
+progress = Progress(TextColumn("[progress.description]{task.description}"), SpinnerColumn(), BarColumn(),
         TaskProgressColumn(), TimeElapsedColumn(), TimeRemainingColumn())
 
 
@@ -156,7 +156,8 @@ class NeuralNetworkClassifier:
         self.label = {k: unique_classes[k] for k in range(self.k)}
         self.intcode = {unique_classes[k]:k for k in range(self.k)}
 
-        """need check here for if batch is float or int and handle accordingly"""
+        """need check here for if batch is float or int and handle accordingly
+        or not allow float batch if so --> need to update docstring and defaults"""
 
         
         self.loss_history = []
@@ -167,8 +168,7 @@ class NeuralNetworkClassifier:
         idxs = np.arange(self.n)
 
         with progress as pb:
-            t2 = pb.add_task('Epoch', total=epochs) # outer
-            t1 = pb.add_task('Batch', total=batches) # inner
+            t1 = pb.add_task('[blue]Training', total=epochs)
 
             for epoch in range(epochs):
                 
@@ -197,13 +197,6 @@ class NeuralNetworkClassifier:
                     # UPDATE WEIGHTS
                         # less fancy here
 
-                    
-                    # update rich progress bar for each batch
-                    pb.update(task_id=t1, advance=1)
-
-                        
-                # reset the progress bar after each batch
-                pb.update(task_id=t1, completed=0)
 
                 # add the latest loss to the history
                 self.loss_history.append(loss)
@@ -217,8 +210,10 @@ class NeuralNetworkClassifier:
                 self.accuracy_history.append(train_accuracy)
 
                 # update rich progress bar for each epoch
-                pb.update(task_id=t2, advance=1)
-                
+                pb.update(t1, advance=1)
+            
+                if progress.finished:
+                    pb.update(t1, description="[bright_green]Training complete!")
                 
                 
 
