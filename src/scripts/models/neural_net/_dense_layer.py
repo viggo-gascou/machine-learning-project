@@ -46,6 +46,12 @@ class DenseLayer:
         """
         return self.activation(X @ self.weights + self.biases)
 
+    def activation_function(self):
+        if self.activation == softmax:
+            return 'softmax'
+        elif self.activation == leaky_relu:
+            return 'leaky_relu'
+
 
 def leaky_relu(z):
     return np.where(z > 0, z, z * 0.01)
@@ -53,3 +59,4 @@ def leaky_relu(z):
 def softmax(z):
     e = np.exp(z)
     return e / e.sum()
+    
