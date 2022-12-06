@@ -1,12 +1,10 @@
 import numpy as np
-from ._dense_layer import DenseLayer
+from mlproject.helpers import accuracy_score
+from mlproject.neural_net._loss import cross_entropy_loss
+from mlproject.neural_net._activations import leaky_relu_der
 from rich.progress import Progress, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn, TimeRemainingColumn, SpinnerColumn
 from typing import Union
-
-
-
-# is this allowed???
-from sklearn.metrics import accuracy_score 
+from sklearn.preprocessing import OneHotEncoder
 
 progress = Progress(TextColumn("[progress.description]{task.description}"), SpinnerColumn(), BarColumn(),
         TaskProgressColumn(), TimeElapsedColumn(), TimeRemainingColumn())
@@ -49,6 +47,7 @@ class NeuralNetworkClassifier:
         self.y = None
         self.k = None
         self.layers = layers
+        self.activations, self.sums = [], []
 
         if loss == 'cross_entropy':
             self.loss = cross_entropy_loss
@@ -82,8 +81,11 @@ class NeuralNetworkClassifier:
             where output_n corresponds to the output_n of the last DenseLayer in the network
             and n is the number of data points.
         """
+        self.activations.append(X)
         for layer in self.layers:
             X = layer.forward(X)
+            self.activations.append(X)
+            self.sums.append(layer.z)
 
         return X
 
@@ -119,7 +121,7 @@ class NeuralNetworkClassifier:
         """
         return self.forward(X)
 
-    def fit(self, X, y, batches: Union[float,int] = 1, epochs:int = 1000, lr:float = 0.01):
+    def fit(self, X, y, batches: int = 1, epochs:int = 1000, lr:float = 0.01):
         """The actual training of the network to the given data
 
         Parameters
@@ -131,10 +133,9 @@ class NeuralNetworkClassifier:
         y : 1d ndarray
             n x 1 vector of target class labels
 
-        batches : float or int, optional
-            The number of batches to use for training in each epoch
-            can either be a proportion of the dataset i.e., 0.5 for 50 % of the dataset
-            or an integer indicating the number of splits to split the data into,
+        batches : int, optional
+            The number of batches to use for training in each epoch,
+            an integer indicating the number of splits to split the data into,
             by default 1 which corresponds to training on the entire dataset
             in every epoch.
 
@@ -148,21 +149,26 @@ class NeuralNetworkClassifier:
         self.X = X
         self.n, self.p = self.X.shape
         self.y = y
-        self.k = len(np.unique(self.y))
+        self.learning_rate = lr
+
+        unique_classes = np.unique(y)
+        self.k = len(unique_classes)
+
+        one_hot = OneHotEncoder(categories=[unique_classes])
+        self.y_hot_encoded = one_hot.fit_transform(self.y).toarray()
+        
+        if self.layers[-1].out_neurons() != self.k:
+            raise ValueError(f"The number of neurons in the output layer, output_n: ({self.layers[-1].out_neurons()}) must be equal to the number of classes, k: ({self.k})")
+        if self.layers[0].in_neurons() != self.X.shape[1]:
+            raise ValueError(f"The number of neurons in the input layer, input_n: ({self.layers[0].in_neurons()}) must be equal to the number features in the dataset: ({self.X.shape[1]})")
 
         # populate label-intcode dictionaries
-        unique_classes = np.unique(y)
-
         self.label = {k: unique_classes[k] for k in range(self.k)}
         self.intcode = {unique_classes[k]:k for k in range(self.k)}
-
-        """need check here for if batch is float or int and handle accordingly
-        or not allow float batch if so --> need to update docstring and defaults"""
-
         
+
         self.loss_history = []
         self.accuracy_history = []
-        self._batch_num = 0
 
         # get indices of every data point
         idxs = np.arange(self.n)
@@ -181,29 +187,28 @@ class NeuralNetworkClassifier:
                 for batch in batch_idxs:
                     
                     X_batch = self.X[batch]
-                    y_batch = self.y[batch]
+                    y_batch = self.y_hot_encoded[batch]
 
                     # compute the initial class probabilities by doing a single forward pass
-                    # and softmax to get a single prediction for each data point
                         # note: this should come 'automatically' from defining the last layer
                         # in the model as a layer with output_n = k with softmax activation
                         # where k is the number of classes.
-                    # maybe a better name is 'init_guess' ?
                     init_probs = self.forward(X_batch)
-                    loss = self.loss(y_batch, init_probs)
+                    
+                    # dividide by the number of data points in this specific batch to get the average loss.
+                    loss = self.loss(y_batch, init_probs) / len(y_batch)
 
-                    # DO BACKWARD PASS
-                        # fancy stuff here
-                    # UPDATE WEIGHTS
-                        # less fancy here
+                    
+                    self.backward(y_batch)
 
-
+                    
                 # add the latest loss to the history
                 self.loss_history.append(loss)
 
                 # predict with the current weights and biases on the whole data set
                 batch_predict = self.predict(self.X)
                 
+                # calculate the accuracy score of the prediction
                 train_accuracy = accuracy_score(self.y, batch_predict)
 
                 # add accuracy to the history
@@ -214,26 +219,41 @@ class NeuralNetworkClassifier:
             
                 if progress.finished:
                     pb.update(t1, description="[bright_green]Training complete!")
-                
-                
 
+    def backward(self, y_batch):
+        """Computes a single backward pass all the way through the network.
+        as well as updating the weights and biases.
 
-    
-def cross_entropy_loss(y_true, y_pred):
-    """Compute the categorical cross entropy loss
-    from the given true labels and predicted labels.
+        Parameters
+        ----------
+        y_batch : 2d ndarray
+            array of one-hot encoded ground_truth labels
+        """
 
-    Parameters
-    ----------
-    y_true : 1d ndarray
-        true class labels of size 1 x n where n is the number of data points.
-    y_pred : 1d ndarray
-        predicted class labels of size 1 x n where n is the number of data points.
+        delta = self.activations[-1] - y_batch
 
-    Returns
-    -------
-    float
-        Cross entropy score for the given prediction
-    """
-    return -np.sum(np.log(y_pred) * y_true)
+        grad_bias = delta.sum(0)
+        
+        grad_weight = self.activations[-2].T @ delta
 
+        grad_biases, grad_weights = [], []
+        grad_weights.append(grad_weight)
+        grad_biases.append(grad_bias)
+
+        for i in range(2, len(self.layers)+1):
+            layer = self.layers[-i+1]
+            dzda = delta @ layer.weights.T
+            delta = dzda * leaky_relu_der(self.sums[-i])
+
+            grad_bias = delta.sum(0)
+            grad_weight = self.activations[-i-1].T @ delta
+            grad_weights.append(grad_weight)
+            grad_biases.append(grad_bias)
+        
+        # reverse the gradient lists so we can index them normally.
+        grad_biases_rev = list(reversed(grad_biases))
+        grad_weights_rev = list(reversed(grad_weights))
+
+        for i in range(0, len(self.layers)):
+            self.layers[i].weights -= (self.learning_rate * grad_weights_rev[i])
+            self.layers[i].biases -= (self.learning_rate * grad_biases_rev[i])
