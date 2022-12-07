@@ -28,9 +28,9 @@ jobs:
         run: pip install mkdocs mkdocs-autorefs mkdocs-gen-files mkdocs-literate-nav mkdocs-material mkdocs-material-extensions mkdocs-section-index mkdocstrings mkdocstrings-python           
   
       - name: add github actions bot credentials
-        run: git config user.name 'github-actions[bot]' && git config user.email 'github-actions[bot]@users.noreply.github.com'
+        run: git config user.name 'github-actions[bot]' && git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
 
       - name: deploy documentation
-        run: mkdocs gh-deploy
+        run: mkdocs gh-deploy --force
       
   
