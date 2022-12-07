@@ -1,10 +1,10 @@
 import numpy as np
 
 def accuracy_score(y_true, y_pred, normalize=True):
-    """Calcuate the accuracy score from a given array of true labels 
+    """Calculate the accuracy score from a given array of true labels 
     and a given array of predicted labels.
 
-    Inspire by https://stackoverflow.com/a/64680660
+    Inspired by [https://stackoverflow.com/a/64680660](https://stackoverflow.com/a/64680660)
 
     Parameters
     ----------

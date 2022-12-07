@@ -1,4 +1,5 @@
 import numpy as np
+from mlproject.neural_net._dense_layer import DenseLayer
 from mlproject.helpers import accuracy_score
 from mlproject.neural_net._loss import cross_entropy_loss
 from mlproject.neural_net._activations import leaky_relu_der
@@ -15,28 +16,24 @@ class NeuralNetworkClassifier:
     """NeuralNetworkClassifier
 
     Feed Forward Neural Network Classifier with however many
-    dense layers (fully connected layers) of class DenseLayer each with own
+    dense layers (fully connected layers) of class DenseLaayer [`DenseLayer`][mlproject.neural_net._dense_layer.DenseLayer] each with own
     activation function and finally the loss function can be chosen.
 
     Parameters
     ----------
     layers : list, optional
-        A list of class DenseLayer, by default empty list
-
+        A list of class [`DenseLayer`][mlproject.neural_net._dense_layer.DenseLayer]
     loss : str, optional
-        The loss function to be used, by default 'cross_entropy'
+        The loss function to be used, currently only [`cross_entropy`][mlproject.neural_net._loss.cross_entropy_loss] is supported.
 
     Attributes
     ----------
     X : 2d ndarray
         Data points to use for training the neural network
-
     y : 1d ndarray
         Target classes
-
     n : int
         Number of data points (X.shape[0])
-
     p : int
         Number of features (X.shape[1])
     """        
@@ -54,7 +51,7 @@ class NeuralNetworkClassifier:
         else:
             raise NotImplementedError(f"{loss} not implemented yet. Choose from ['cross_entropy']") 
 
-    def add(self, layer):
+    def add(self, layer: DenseLayer):
         """Add a new layer to the network, after the current layer.
 
         Parameters
@@ -72,13 +69,13 @@ class NeuralNetworkClassifier:
         X : 2d ndarray
             The data to use for the forward pass.
             Must be of size n x input_n 
-            where input_n must come from the first DenseLayer in the network.
+            where input_n must come from the first [`DenseLayer`][mlproject.neural_net._dense_layer.DenseLayer] in the network.
 
         Returns
         -------
         2d ndarray
             An n x output_n array
-            where output_n corresponds to the output_n of the last DenseLayer in the network
+            where output_n corresponds to the output_n of the last [`DenseLayer`][mlproject.neural_net._dense_layer.DenseLayer] in the network
             and n is the number of data points.
         """
         self.activations.append(X)
@@ -122,28 +119,24 @@ class NeuralNetworkClassifier:
         return self.forward(X)
 
     def fit(self, X, y, batches: int = 1, epochs:int = 1000, lr:float = 0.01):
-        """The actual training of the network to the given data
+        r"""The actual training of the network to the given data
 
         Parameters
         ----------
         X : 2d ndarray
-            An n x p matrix of data points
+            An $N \times P$ matrix of data points
             where n is the number of data points and p is the number of features.
-
         y : 1d ndarray
-            n x 1 vector of target class labels
-
+            $N \times 1$ vector of target class labels
         batches : int, optional
             The number of batches to use for training in each epoch,
             an integer indicating the number of splits to split the data into,
-            by default 1 which corresponds to training on the entire dataset
+            by default $1$ which corresponds to training on the entire dataset
             in every epoch.
-
         epochs : int, optional
-            The number of iterations to train for, by default 1000
-
+            The number of iterations to train for
         lr : float, optional
-            The learning rate for gradient descent, by default 0.01
+            The learning rate for gradient descent
         """        
         
         self.X = X
