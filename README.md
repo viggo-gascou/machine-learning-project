@@ -1,14 +1,8 @@
-# machine-learning-project
-Repo for storing our machine learning project
+# Machine Learning Project
 
-To start using the library simply run from the github root directory
+Repository for storing our machine learning project
 
-```sh
-pip install .
-```
+The aim of this project was to implement a Feedforward Neural Network as well as a Decision Tree 
+to use for classification on a subset of the [Fashion-MNIST dataset](https://github.com/zalandoresearch/fashion-mnist)
 
-Or if you want to edit or add anything you can install the library in editable mode, so you don't have to reinstall after each change:
-
-```sh
-pip install -e .
-```
+For more information and how to use and install this library, simply visit the [documentation page](https://viggo-gascou.github.io/machine-learning-project/).
