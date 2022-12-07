@@ -1,4 +1,4 @@
-# Welcome to the documentation for our machine learning project
+# Welcome to the documentation for our machine learning project!
 
 ## Implementations
 

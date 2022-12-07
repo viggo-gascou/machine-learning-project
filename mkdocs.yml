@@ -7,6 +7,7 @@ nav:
 
 repo_url: https://github.com/viggo-gascou/machine-learning-project
 repo_name: machine-learning-project
+edit_uri: ""
 
 plugins:
 - search
