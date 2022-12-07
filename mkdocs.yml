@@ -1,0 +1,70 @@
+site_name: Machine Learning Project Documentation
+
+nav:
+  - Home: index.md
+  - Installation: installation.md
+  - Code Reference: reference/  
+
+repo_url: https://github.com/viggo-gascou/machine-learning-project
+repo_name: machine-learning-project
+
+plugins:
+- search
+- autorefs
+- gen-files:
+    scripts:
+    - docs/gen_ref_pages.py
+- literate-nav:
+    nav_file: SUMMARY.md
+- section-index
+- mkdocstrings:
+    default_handler: python
+    handlers:
+      python:
+        options:
+          show_root_toc_entry: false
+          docstring_style: numpy
+          show_submodules: true
+          show_source: true
+theme:
+  icon:
+    repo: fontawesome/brands/git-alt
+  name: "material"
+  features:
+    - navigation.top
+    - navigation.sections
+    - toc.integrate 
+  palette:
+    # Palette toggle for light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+ 
+    # Palette toggle for dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: cyan
+      accent: blue
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+markdown_extensions:
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      use_pygments: true
+  - toc:
+      permalink: ⚓︎
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
