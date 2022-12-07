@@ -1,7 +1,6 @@
 # This is a basic workflow that is manually triggered and automatically triggered on every push
 
 name: gh-deploy
-
 on:
   push:
     branches:
