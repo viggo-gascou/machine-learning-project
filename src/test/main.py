@@ -6,6 +6,7 @@ from mlproject.neural_net import DenseLayer, NeuralNetworkClassifier
 
 X_train, X_test, y_train, y_test = data_loader(raw=True, scaled=False)
 X_train_SS, X_test_SS, y_train_SS, y_test_SS = data_loader(raw=False, scaled=True)
+#X_train_PCA, X_test_PCA, y_train_PCA, y_test_PCA = data_loader(raw=False, scaled=False, pca=True)
 
 
 NN = NeuralNetworkClassifier(loss='cross_entropy')
