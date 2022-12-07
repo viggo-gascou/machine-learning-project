@@ -20,6 +20,9 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.9
+          
+      - name: install mlproject
+        run: pip install .
       
       - name: install required python packages
         run: pip install mkdocs mkdocs-autorefs mkdocs-gen-files mkdocs-literate-nav mkdocs-material mkdocs-material-extensions mkdocs-section-index mkdocstrings mkdocstrings-python           
