@@ -1,0 +1,25 @@
+# This is a basic workflow that is manually triggered and automatically triggered on every push
+
+name: gh-deploy
+
+name: ci 
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: setup python env
+      - uses: actions/setup-python@v4
+        with:
+          python-version: 3.9
+      - name: install required python packages
+      - run: pip install mkdocs mkdocs-autorefs mkdocs-gen-files mkdocs-literate-nav mkdocs-material mkdocs-material-extensions mkdocs-section-index mkdocstrings mkdocstrings-python           
+      - name: deploy documentation
+      - run: mkdocs gh-deploy --force
