@@ -25,7 +25,7 @@ jobs:
         run: pip install .
       
       - name: install required python packages
-        run: pip install mkdocs mkdocs-autorefs mkdocs-gen-files mkdocs-literate-nav mkdocs-material mkdocs-material-extensions mkdocs-section-index mkdocstrings mkdocstrings-python           
+        run: pip install mkdocs mkdocs-autorefs mkdocs-same-dir mkdocs-gen-files mkdocs-literate-nav mkdocs-material mkdocs-material-extensions mkdocs-section-index mkdocstrings mkdocstrings-python           
       
       - name: deploy documentation
         run: mkdocs gh-deploy --force

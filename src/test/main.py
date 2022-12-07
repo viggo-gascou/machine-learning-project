@@ -8,7 +8,6 @@ X_train, X_test, y_train, y_test = data_loader(raw=True, scaled=False)
 X_train_SS, X_test_SS, y_train_SS, y_test_SS = data_loader(raw=False, scaled=True)
 #X_train_PCA, X_test_PCA, y_train_PCA, y_test_PCA = data_loader(raw=False, scaled=False, pca=True)
 
-
 NN = NeuralNetworkClassifier(loss='cross_entropy')
 NN.add(DenseLayer(784,128,"leaky_relu"))
 NN.add(DenseLayer(128,32,"leaky_relu"))
@@ -17,6 +16,7 @@ NN.add(DenseLayer(16,5,"softmax"))
 
 NN.fit(X_train_SS, y_train_SS, batches=5, epochs=150, lr=0.00001)
 
+""" MAYBE DIFFERENT WEIGHT INITIALIZATION FOR SOFTMAX??"""
 
 
 

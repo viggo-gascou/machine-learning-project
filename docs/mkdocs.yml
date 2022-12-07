@@ -8,10 +8,12 @@ nav:
 repo_url: https://github.com/viggo-gascou/machine-learning-project
 repo_name: machine-learning-project
 edit_uri: ""
+docs_dir: .
 
 plugins:
 - search
 - autorefs
+- same-dir
 - gen-files:
     scripts:
     - docs/gen_ref_pages.py
