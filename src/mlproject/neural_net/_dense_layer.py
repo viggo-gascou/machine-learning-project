@@ -11,8 +11,8 @@ class DenseLayer:
         The amount of inputs to the DenseLayer
     output_n : int
         The amount of outputs to the DenseLayer
-    activation : 'leaky_relu', stable_softmax
-        The activation function to use for all of the neurons in the DenseLayer
+    activation : str
+        The activation function to use for all of the neurons in the DenseLayer, either 'leaky_relu' or 'softmax'
     """
     def __init__(self, input_n: int, output_n: int, activation: str):
         # he initiliasation of weights and biases
@@ -26,7 +26,7 @@ class DenseLayer:
 
         if activation == 'leaky_relu':
             self.activation = leaky_relu
-        elif activation == 'stable_softmax':
+        elif activation == 'softmax' or activation == 'stable_softmax':
             self.activation = stable_softmax
         else:
             raise NotImplementedError(f"{activation} not implemented yet. Choose from ['leaky_relu', 'stable_softmax']")

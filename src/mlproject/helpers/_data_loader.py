@@ -36,7 +36,9 @@ def data_loader(raw=True, scaled=False, pca=False):
     elif scaled and not raw:
         X_train, y_train = np.hsplit(np.load(f"{ROOT_DIR}/data/fashion_train_scaled.npy"),[-1])
         X_test, y_test = np.hsplit(np.load(f"{ROOT_DIR}/data/fashion_test_scaled.npy"),[-1])
-
+        # converting the y_labels back to integers from floats to avoid issues
+        y_train, y_test = y_train.astype(int), y_test.astype(int)
+        
     elif pca and not raw and not scaled:
         X_train, y_train = np.hsplit(np.load(f"{ROOT_DIR}/data/fashion_train_pca.npy"),[-1])
         X_test, y_test = np.hsplit(np.load(f"{ROOT_DIR}/data/fashion_test_pca.npy"),[-1])

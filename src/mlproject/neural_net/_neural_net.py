@@ -16,8 +16,10 @@ class NeuralNetworkClassifier:
     """NeuralNetworkClassifier
 
     Feed Forward Neural Network Classifier with however many
-    dense layers (fully connected layers) of class DenseLaayer [`DenseLayer`][mlproject.neural_net._dense_layer.DenseLayer] each with own
-    activation function and finally the loss function can be chosen.
+    dense layers (fully connected layers) of class [`DenseLayer`][mlproject.neural_net._dense_layer.DenseLayer] each with own
+    activation function and a network wide loss function.
+    The layers of the network can either be added when initilizing the network, as a list
+    or added individually with the [`add`][mlproject.neural_net._neural_net.NeuralNetworkClassifier.add] method after initialization.
 
     Parameters
     ----------
@@ -47,6 +49,7 @@ class NeuralNetworkClassifier:
         self.activations, self.sums = [], []
 
         if loss == 'cross_entropy':
+            self.loss_str = 'cross_entropy_loss'
             self.loss = cross_entropy_loss
         else:
             raise NotImplementedError(f"{loss} not implemented yet. Choose from ['cross_entropy']") 
@@ -58,6 +61,25 @@ class NeuralNetworkClassifier:
         ----------
         layer : DenseLayer
             Fully connected layer.
+
+        Example
+        -------
+        ``` py
+        >>> NN = NeuralNetworkClassifier(loss='cross_entropy')
+        >>> NN.add(DenseLayer(784,128,"leaky_relu"))
+        >>> NN.add(DenseLayer(128,5,"softmax"))
+        >>> print(NN)
+        
+        NeuralNetworkClassifier 
+        --------------------------------
+        Loss function: cross_entropy_loss
+
+        Input layer: 
+                Input: 784, Output: 128 , Activation: leaky_relu
+
+        Output layer: 
+                Input: 128, Output: 5 , Activation: softmax
+        ```
         """
         self.layers.append(layer)
 
@@ -250,3 +272,21 @@ class NeuralNetworkClassifier:
         for i in range(0, len(self.layers)):
             self.layers[i].weights -= (self.learning_rate * grad_weights_rev[i])
             self.layers[i].biases -= (self.learning_rate * grad_biases_rev[i])
+
+    def __str__(self):
+        s = '\nNeuralNetworkClassifier \n'
+        s += '--------------------------------\n'
+        s += f'Loss function: {self.loss_str}\n\n'
+        layers = [self.layers[i] for i in range(0, len(self.layers))]
+        layers_neu = [f"\tInput: {i.input_n}, Output: {i.output_n} , Activation: {i.activation_function()}"for i in layers]
+        layer_num = 0
+        for layer in layers_neu:
+            if layer_num == 0:
+                s += "Input layer: \n" + layer + "\n\n"
+            elif layer_num == len(self.layers) -1:
+                s += f"Output layer: \n" + layer
+            else:
+                s += f"Layer: {layer_num}\n" + layer + "\n\n"
+            layer_num += 1
+
+        return s
