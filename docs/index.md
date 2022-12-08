@@ -18,6 +18,6 @@ A decision tree for use in classification problems.
 
 * [`Node`][mlproject.decision_tree._node.Node] - A tree node used by the decision tree classifier, is either leaf or not.
 
-* [`Impurtiy Criterion`][mlproject.decision_tree._impurity.gini_impurity] - The impurity function to use when decision whether to split nodes in the decision tree 
+* [`Impurtiy Criterion`][mlproject.decision_tree._impurity.entropy_impurity] - The impurity function to use when decision whether to split nodes in the decision tree 
     * (currently only  [`gini_impurity`][mlproject.decision_tree._impurity.gini_impurity] and  [`entropy`][mlproject.decision_tree._impurity.entropy_impurity] are supported).
   
