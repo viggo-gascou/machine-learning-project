@@ -711,7 +711,7 @@ minimum number of samples in leaf nodes.</p>
           </td>
           <td><p>The impurity criterion to use when splitting nodes, by default 'gini'</p></td>
           <td>
-                <code>&#39;entropy&#39;</code>
+                <code>&#39;gini&#39;</code>
           </td>
         </tr>
         <tr>
@@ -1003,7 +1003,7 @@ minimum number of samples in leaf nodes.</p>
 <span class="sd">    min_samples_in_leaf : int, optional</span>
 <span class="sd">        The minimum number of samples that need to be in a leaf, by default 2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_samples_in_leaf</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;gini&#39;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_samples_in_leaf</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span> <span class="o">=</span> <span class="n">max_depth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_samples_in_leaf</span> <span class="o">=</span> <span class="n">min_samples_in_leaf</span>
