@@ -21,7 +21,7 @@ class DecisionTreeClassifier:
     min_samples_in_leaf : int, optional
         The minimum number of samples that need to be in a leaf, by default 2
     """
-    def __init__(self, criterion='entropy', max_depth=100, min_samples_in_leaf=2):
+    def __init__(self, criterion='gini', max_depth=100, min_samples_in_leaf=2):
 
         self.max_depth = max_depth
         self.min_samples_in_leaf = min_samples_in_leaf
