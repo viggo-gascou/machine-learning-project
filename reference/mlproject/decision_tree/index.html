@@ -647,7 +647,7 @@ minimum number of samples in leaf nodes.</p>
           </td>
           <td><p>The impurity criterion to use when splitting nodes, by default 'gini'</p></td>
           <td>
-                <code>&#39;gini&#39;</code>
+                <code>&#39;entropy&#39;</code>
           </td>
         </tr>
         <tr>
@@ -676,11 +676,7 @@ minimum number of samples in leaf nodes.</p>
 
         <details class="quote">
           <summary>Source code in <code>mlproject/decision_tree/_decision_tree.py</code></summary>
-          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  5</span>
-<span class="normal">  6</span>
-<span class="normal">  7</span>
-<span class="normal">  8</span>
-<span class="normal">  9</span>
+          <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">  9</span>
 <span class="normal"> 10</span>
 <span class="normal"> 11</span>
 <span class="normal"> 12</span>
@@ -787,7 +783,148 @@ minimum number of samples in leaf nodes.</p>
 <span class="normal">113</span>
 <span class="normal">114</span>
 <span class="normal">115</span>
-<span class="normal">116</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DecisionTreeClassifier</span><span class="p">:</span>
+<span class="normal">116</span>
+<span class="normal">117</span>
+<span class="normal">118</span>
+<span class="normal">119</span>
+<span class="normal">120</span>
+<span class="normal">121</span>
+<span class="normal">122</span>
+<span class="normal">123</span>
+<span class="normal">124</span>
+<span class="normal">125</span>
+<span class="normal">126</span>
+<span class="normal">127</span>
+<span class="normal">128</span>
+<span class="normal">129</span>
+<span class="normal">130</span>
+<span class="normal">131</span>
+<span class="normal">132</span>
+<span class="normal">133</span>
+<span class="normal">134</span>
+<span class="normal">135</span>
+<span class="normal">136</span>
+<span class="normal">137</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span>
+<span class="normal">186</span>
+<span class="normal">187</span>
+<span class="normal">188</span>
+<span class="normal">189</span>
+<span class="normal">190</span>
+<span class="normal">191</span>
+<span class="normal">192</span>
+<span class="normal">193</span>
+<span class="normal">194</span>
+<span class="normal">195</span>
+<span class="normal">196</span>
+<span class="normal">197</span>
+<span class="normal">198</span>
+<span class="normal">199</span>
+<span class="normal">200</span>
+<span class="normal">201</span>
+<span class="normal">202</span>
+<span class="normal">203</span>
+<span class="normal">204</span>
+<span class="normal">205</span>
+<span class="normal">206</span>
+<span class="normal">207</span>
+<span class="normal">208</span>
+<span class="normal">209</span>
+<span class="normal">210</span>
+<span class="normal">211</span>
+<span class="normal">212</span>
+<span class="normal">213</span>
+<span class="normal">214</span>
+<span class="normal">215</span>
+<span class="normal">216</span>
+<span class="normal">217</span>
+<span class="normal">218</span>
+<span class="normal">219</span>
+<span class="normal">220</span>
+<span class="normal">221</span>
+<span class="normal">222</span>
+<span class="normal">223</span>
+<span class="normal">224</span>
+<span class="normal">225</span>
+<span class="normal">226</span>
+<span class="normal">227</span>
+<span class="normal">228</span>
+<span class="normal">229</span>
+<span class="normal">230</span>
+<span class="normal">231</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span>
+<span class="normal">241</span>
+<span class="normal">242</span>
+<span class="normal">243</span>
+<span class="normal">244</span>
+<span class="normal">245</span>
+<span class="normal">246</span>
+<span class="normal">247</span>
+<span class="normal">248</span>
+<span class="normal">249</span>
+<span class="normal">250</span>
+<span class="normal">251</span>
+<span class="normal">252</span>
+<span class="normal">253</span>
+<span class="normal">254</span>
+<span class="normal">255</span>
+<span class="normal">256</span>
+<span class="normal">257</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DecisionTreeClassifier</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Decision Tree Classifier</span>
 
 <span class="sd">    Simple decision tree classifier with user specific impurity, max depth and </span>
@@ -802,7 +939,7 @@ minimum number of samples in leaf nodes.</p>
 <span class="sd">    min_samples_in_leaf : int, optional</span>
 <span class="sd">        The minimum number of samples that need to be in a leaf, by default 2</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;gini&#39;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_samples_in_leaf</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;entropy&#39;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">min_samples_in_leaf</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span> <span class="o">=</span> <span class="n">max_depth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">min_samples_in_leaf</span> <span class="o">=</span> <span class="n">min_samples_in_leaf</span>
@@ -814,42 +951,118 @@ minimum number of samples in leaf nodes.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">entropy_impurity</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Fit the decision tree to the given data</span>
 
-        <span class="c1"># calls the _grow function</span>
-        <span class="k">assert</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;not implemented yet&quot;</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : 2d ndarray</span>
+<span class="sd">            The data to be used for fitting the decision tree</span>
+<span class="sd">        y : 2d ndarray</span>
+<span class="sd">            An array of the true labels for the data points</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">with</span> <span class="n">progress</span> <span class="k">as</span> <span class="n">pb</span><span class="p">:</span>
+            <span class="n">t1</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="s1">&#39;[blue]Training&#39;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grow</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+            <span class="n">pb</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">progress</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+                    <span class="n">pb</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bright_green]Training complete!&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Predict class labels for the given data.</span>
 
-        <span class="c1"># calls the _traverse function</span>
-        <span class="k">assert</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;not implemented yet&quot;</span><span class="p">)</span>
+<span class="sd">        For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
+<span class="sd">        and return the majority class of that leaf node.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : 2d ndarray</span>
+<span class="sd">            The data that we want to use to make predictions.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        1d ndarray</span>
+<span class="sd">            All predicted class labels with size n, where n is the number of data points.</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_traverse</span><span class="p">(</span><span class="n">datapoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span> <span class="k">for</span> <span class="n">datapoint</span> <span class="ow">in</span> <span class="n">X</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Predict class probabilities for the given data</span>
 
-        <span class="k">assert</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;not implemented yet&quot;</span><span class="p">)</span>
+<span class="sd">        For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
+<span class="sd">        and return the class probabilities of that leaf node.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : 2d ndarray</span>
+<span class="sd">            The data that we want to use to make predictions</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        2d ndarray</span>
+<span class="sd">            All probabilites with size n x k, where n is the number of data points and k is the number classes</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_traverse</span><span class="p">(</span><span class="n">datapoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">datapoint</span> <span class="ow">in</span> <span class="n">X</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">_grow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cur_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Grows a decision tree from the given data.</span>
+<span class="sd">        This is the part that is doing the actual fitting of the decision tree.</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : 2d ndarray</span>
+<span class="sd">            The data to use when growing the decision tree</span>
+<span class="sd">        y : 2d ndarray</span>
+<span class="sd">            array of the true class labels</span>
+<span class="sd">        cur_depth : int, optional</span>
+<span class="sd">            The current depth of the decision tree, by default 0</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Node</span>
+<span class="sd">            A new node of class Node with new left and right children.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">node_unique_classes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">node_k</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">node_unique_classes</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="p">(</span><span class="n">cur_depth</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_k</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_samples_in_leaf</span><span class="p">):</span>
-            <span class="n">most_common</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_most_common_label</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="n">majority_class</span><span class="o">=</span><span class="n">most_common</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cur_depth</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_depth</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_k</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">min_samples_in_leaf</span> <span class="p">):</span>
+
+            <span class="n">most_common</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_most_common_label</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">prob</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="n">class_probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_most_common_label</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">prob</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="n">majority_class</span><span class="o">=</span><span class="n">most_common</span><span class="p">,</span> <span class="n">class_probs</span><span class="o">=</span><span class="n">class_probs</span><span class="p">)</span>
 
         <span class="n">cur_depth</span> <span class="o">+=</span> <span class="mi">1</span>
 
         <span class="n">best_feature</span><span class="p">,</span> <span class="n">best_threshold</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_best_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
-        <span class="n">left_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">best_feature</span> <span class="o">&gt;=</span> <span class="n">best_threshold</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-        <span class="n">right_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">best_feature</span> <span class="o">&lt;</span> <span class="n">best_threshold</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">left_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">best_feature</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">best_threshold</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">right_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">best_feature</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_threshold</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
 
         <span class="n">left</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grow</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">left_idxs</span><span class="p">,</span> <span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">left_idxs</span><span class="p">],</span> <span class="n">cur_depth</span><span class="p">)</span>
         <span class="n">right</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grow</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">right_idxs</span><span class="p">,</span> <span class="p">:],</span> <span class="n">y</span><span class="p">[</span><span class="n">right_idxs</span><span class="p">],</span> <span class="n">cur_depth</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">best_feature</span><span class="p">,</span> <span class="n">best_threshold</span><span class="p">)</span>
 
 
     <span class="k">def</span> <span class="nf">_best_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the best split of a node with the given data points</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : 2d ndarray</span>
+<span class="sd">            The data points to consider for splitting this node</span>
+<span class="sd">        y : 2d ndarray</span>
+<span class="sd">            The true labels to consider for splitting this node</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">            A tuple containing the best index and threshold for the split</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">best_gain</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span>
 
         <span class="k">for</span> <span class="n">feat_idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
@@ -867,11 +1080,27 @@ minimum number of samples in leaf nodes.</p>
         <span class="k">return</span> <span class="n">split_idx</span><span class="p">,</span> <span class="n">split_thresh</span>
 
     <span class="k">def</span> <span class="nf">_information_gain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">feature_col</span><span class="p">,</span> <span class="n">split_thresh</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the information gain of a node with the given data labels</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        y : 2d ndarray</span>
+<span class="sd">            array of true labels for this node</span>
+<span class="sd">        feature_col : 2d ndarray</span>
+<span class="sd">            Column of dataset containing the data points of the best feature for this split</span>
+<span class="sd">        split_thresh : float or int</span>
+<span class="sd">            the threshold for the best split of the data</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float</span>
+<span class="sd">            The information gain from this node compared to it&#39;s parent</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">parent_impurity</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
 
-        <span class="n">left_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">feature_col</span> <span class="o">&gt;=</span> <span class="n">split_thresh</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
-        <span class="n">right_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">feature_col</span> <span class="o">&lt;</span> <span class="n">split_thresh</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">left_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">feature_col</span> <span class="o">&lt;=</span> <span class="n">split_thresh</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="n">right_idxs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argwhere</span><span class="p">(</span><span class="n">feature_col</span> <span class="o">&gt;</span> <span class="n">split_thresh</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">left_idxs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">right_idxs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
@@ -888,16 +1117,61 @@ minimum number of samples in leaf nodes.</p>
         <span class="n">information_gain</span> <span class="o">=</span> <span class="n">parent_impurity</span> <span class="o">-</span> <span class="n">weighted_impurity</span>
         <span class="k">return</span> <span class="n">information_gain</span>
 
-    <span class="k">def</span> <span class="nf">_traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">prob</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Traverses the tree until it reaches a leaf node and returns either the majority</span>
+<span class="sd">        class of that node or the class probabilities if prob is True.</span>
 
-        <span class="c1"># traverses the tree until it reaches a leaf node and return the majority</span>
-        <span class="c1"># class of that node.</span>
-        <span class="k">assert</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;not implemented yet&quot;</span><span class="p">)</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        X : 2d ndarray</span>
+<span class="sd">            The data points to use for traversing the tree</span>
+<span class="sd">        node : Node</span>
+<span class="sd">            The node to start the traversal from.</span>
+<span class="sd">        prob : bool, optional</span>
+<span class="sd">            used to specify whether or not to return class probabilities, by default False</span>
 
-    <span class="k">def</span> <span class="nf">_most_common_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int or bool</span>
+<span class="sd">            Depending on `prob` it either returns the majority class or the class probabilities</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">is_leaf</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">prob</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">class_probs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">majority_class</span>
+
+        <span class="k">if</span> <span class="n">X</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">feature</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">node</span><span class="o">.</span><span class="n">threshold</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_traverse</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">left</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">X</span><span class="p">[</span><span class="n">node</span><span class="o">.</span><span class="n">feature</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">node</span><span class="o">.</span><span class="n">threshold</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_traverse</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_most_common_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">prob</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculates the most common label of a leaf node or the class probabilities</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        y : 2d ndarray</span>
+<span class="sd">            Array of true labels for this particular node</span>
+<span class="sd">        prob : bool, optional</span>
+<span class="sd">            used to specify whether or not to return class probabilities, by default False</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        int or bool</span>
+<span class="sd">            Depending on `prob` it either returns the majority class or the class probabilities</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">uniques</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">label_counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">uniques</span><span class="p">,</span> <span class="n">counts</span><span class="p">))</span>
         <span class="n">sorted_keys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">label_counts</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">prob</span><span class="p">:</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">label_counts</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">/</span> <span class="n">n</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">uniques</span><span class="p">])</span>
+
         <span class="k">return</span> <span class="n">sorted_keys</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 </code></pre></div></td></tr></table></div>
         </details>
@@ -913,6 +1187,295 @@ minimum number of samples in leaf nodes.</p>
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="mlproject.decision_tree._decision_tree.DecisionTreeClassifier.fit" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></code>
+
+<a href="#mlproject.decision_tree._decision_tree.DecisionTreeClassifier.fit" class="headerlink" title="Permanent link">⚓︎</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Fit the decision tree to the given data</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>X</code></td>
+          <td>
+                <code>2d ndarray</code>
+          </td>
+          <td><p>The data to be used for fitting the decision tree</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+        <tr>
+          <td><code>y</code></td>
+          <td>
+                <code>2d ndarray</code>
+          </td>
+          <td><p>An array of the true labels for the data points</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>mlproject/decision_tree/_decision_tree.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span>
+<span class="normal">44</span>
+<span class="normal">45</span>
+<span class="normal">46</span>
+<span class="normal">47</span>
+<span class="normal">48</span>
+<span class="normal">49</span>
+<span class="normal">50</span>
+<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fit the decision tree to the given data</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : 2d ndarray</span>
+<span class="sd">        The data to be used for fitting the decision tree</span>
+<span class="sd">    y : 2d ndarray</span>
+<span class="sd">        An array of the true labels for the data points</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="n">progress</span> <span class="k">as</span> <span class="n">pb</span><span class="p">:</span>
+        <span class="n">t1</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">add_task</span><span class="p">(</span><span class="s1">&#39;[blue]Training&#39;</span><span class="p">,</span> <span class="n">total</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_grow</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">pb</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">advance</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">progress</span><span class="o">.</span><span class="n">finished</span><span class="p">:</span>
+                <span class="n">pb</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bright_green]Training complete!&quot;</span><span class="p">)</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="mlproject.decision_tree._decision_tree.DecisionTreeClassifier.predict" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></code>
+
+<a href="#mlproject.decision_tree._decision_tree.DecisionTreeClassifier.predict" class="headerlink" title="Permanent link">⚓︎</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Predict class labels for the given data.</p>
+<p>For all data points in the dataset traverse the decision tree until it reaches a leaf node
+and return the majority class of that leaf node.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>X</code></td>
+          <td>
+                <code>2d ndarray</code>
+          </td>
+          <td><p>The data that we want to use to make predictions.</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>1d ndarray</code>
+          </td>
+          <td><p>All predicted class labels with size n, where n is the number of data points.</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>mlproject/decision_tree/_decision_tree.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">53</span>
+<span class="normal">54</span>
+<span class="normal">55</span>
+<span class="normal">56</span>
+<span class="normal">57</span>
+<span class="normal">58</span>
+<span class="normal">59</span>
+<span class="normal">60</span>
+<span class="normal">61</span>
+<span class="normal">62</span>
+<span class="normal">63</span>
+<span class="normal">64</span>
+<span class="normal">65</span>
+<span class="normal">66</span>
+<span class="normal">67</span>
+<span class="normal">68</span>
+<span class="normal">69</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Predict class labels for the given data.</span>
+
+<span class="sd">    For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
+<span class="sd">    and return the majority class of that leaf node.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : 2d ndarray</span>
+<span class="sd">        The data that we want to use to make predictions.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    1d ndarray</span>
+<span class="sd">        All predicted class labels with size n, where n is the number of data points.</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_traverse</span><span class="p">(</span><span class="n">datapoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">)</span> <span class="k">for</span> <span class="n">datapoint</span> <span class="ow">in</span> <span class="n">X</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="mlproject.decision_tree._decision_tree.DecisionTreeClassifier.predict_proba" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">predict_proba</span><span class="p">(</span><span class="n">X</span><span class="p">)</span></code>
+
+<a href="#mlproject.decision_tree._decision_tree.DecisionTreeClassifier.predict_proba" class="headerlink" title="Permanent link">⚓︎</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Predict class probabilities for the given data</p>
+<p>For all data points in the dataset traverse the decision tree until it reaches a leaf node
+and return the class probabilities of that leaf node.</p>
+
+  <p><strong>Parameters:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td><code>X</code></td>
+          <td>
+                <code>2d ndarray</code>
+          </td>
+          <td><p>The data that we want to use to make predictions</p></td>
+          <td>
+              <em>required</em>
+          </td>
+        </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>2d ndarray</code>
+          </td>
+          <td><p>All probabilites with size n x k, where n is the number of data points and k is the number classes</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>mlproject/decision_tree/_decision_tree.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">71</span>
+<span class="normal">72</span>
+<span class="normal">73</span>
+<span class="normal">74</span>
+<span class="normal">75</span>
+<span class="normal">76</span>
+<span class="normal">77</span>
+<span class="normal">78</span>
+<span class="normal">79</span>
+<span class="normal">80</span>
+<span class="normal">81</span>
+<span class="normal">82</span>
+<span class="normal">83</span>
+<span class="normal">84</span>
+<span class="normal">85</span>
+<span class="normal">86</span>
+<span class="normal">87</span>
+<span class="normal">88</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Predict class probabilities for the given data</span>
+
+<span class="sd">    For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
+<span class="sd">    and return the class probabilities of that leaf node.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    X : 2d ndarray</span>
+<span class="sd">        The data that we want to use to make predictions</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    2d ndarray</span>
+<span class="sd">        All probabilites with size n x k, where n is the number of data points and k is the number classes</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">_traverse</span><span class="p">(</span><span class="n">datapoint</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">root</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">datapoint</span> <span class="ow">in</span> <span class="n">X</span><span class="p">])</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
 
 
 
@@ -936,7 +1499,7 @@ minimum number of samples in leaf nodes.</p>
   <div class="doc doc-contents ">
 
   
-      <p><em>summary</em></p>
+      <p>Node object for building a decision tree.</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -952,9 +1515,9 @@ minimum number of samples in leaf nodes.</p>
         <tr>
           <td><code>feature</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code>int index, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>index of the best feature for splitting this Node, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -962,9 +1525,9 @@ minimum number of samples in leaf nodes.</p>
         <tr>
           <td><code>threshold</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code>float, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>the threshold for the best split of the data, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -972,9 +1535,9 @@ minimum number of samples in leaf nodes.</p>
         <tr>
           <td><code>left</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code><a class="autorefs autorefs-internal" title="mlproject.decision_tree._node.Node" href="_node/#mlproject.decision_tree._node.Node">Node</a>, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>the left child of this Node also of class Node, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -982,9 +1545,9 @@ minimum number of samples in leaf nodes.</p>
         <tr>
           <td><code>right</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code><a class="autorefs autorefs-internal" title="mlproject.decision_tree._node.Node" href="_node/#mlproject.decision_tree._node.Node">Node</a>, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>the right child of this Node also of class Node, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -992,9 +1555,19 @@ minimum number of samples in leaf nodes.</p>
         <tr>
           <td><code>majority_class</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code>int, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>The majority class in this node, only if this Node is a leaf, by default None</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>class_probs</code></td>
+          <td>
+                <code>1d ndarray, optional</code>
+          </td>
+          <td><p>An array of class probabilities for this node, only if this Node is a leaf, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -1029,30 +1602,50 @@ minimum number of samples in leaf nodes.</p>
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;_summary_</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Node object for building a decision tree.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    feature : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    threshold : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    left : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    right : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    majority_class : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
+<span class="sd">    feature : int index, optional</span>
+<span class="sd">        index of the best feature for splitting this Node, by default None</span>
+<span class="sd">    threshold : float, optional</span>
+<span class="sd">        the threshold for the best split of the data, by default None</span>
+<span class="sd">    left : Node, optional</span>
+<span class="sd">        the left child of this Node also of class Node, by default None</span>
+<span class="sd">    right : Node, optional</span>
+<span class="sd">        the right child of this Node also of class Node, by default None</span>
+<span class="sd">    majority_class : int, optional</span>
+<span class="sd">        The majority class in this node, only if this Node is a leaf, by default None</span>
+<span class="sd">    class_probs : 1d ndarray, optional</span>
+<span class="sd">        An array of class probabilities for this node, only if this Node is a leaf, by default None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">*</span><span class="p">,</span><span class="n">majority_class</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">*</span><span class="p">,</span><span class="n">majority_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">class_probs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">=</span> <span class="n">feature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">majority_class</span> <span class="o">=</span> <span class="n">majority_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_probs</span> <span class="o">=</span> <span class="n">class_probs</span>
 
 
     <span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if this Node is a leaf node, otherwise False</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">majority_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
         </details>
@@ -1068,6 +1661,63 @@ minimum number of samples in leaf nodes.</p>
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="mlproject.decision_tree._node.Node.is_leaf" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_leaf</span><span class="p">()</span></code>
+
+<a href="#mlproject.decision_tree._node.Node.is_leaf" class="headerlink" title="Permanent link">⚓︎</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns True if this Node is a leaf node, otherwise False</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>True if this Node is a leaf node, otherwise False</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>mlproject/decision_tree/_node.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if this Node is a leaf node, otherwise False</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">majority_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
 
 
 

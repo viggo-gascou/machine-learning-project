@@ -421,6 +421,19 @@
     Node
   </a>
   
+    <nav class="md-nav" aria-label="Node">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mlproject.decision_tree._node.Node.is_leaf" class="md-nav__link">
+    is_leaf()
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
     </ul>
@@ -662,7 +675,7 @@
   <div class="doc doc-contents ">
 
   
-      <p><em>summary</em></p>
+      <p>Node object for building a decision tree.</p>
 
   <p><strong>Parameters:</strong></p>
   <table>
@@ -678,9 +691,9 @@
         <tr>
           <td><code>feature</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code>int index, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>index of the best feature for splitting this Node, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -688,9 +701,9 @@
         <tr>
           <td><code>threshold</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code>float, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>the threshold for the best split of the data, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -698,9 +711,9 @@
         <tr>
           <td><code>left</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code><a class="autorefs autorefs-internal" title="mlproject.decision_tree._node.Node" href="#mlproject.decision_tree._node.Node">Node</a>, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>the left child of this Node also of class Node, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -708,9 +721,9 @@
         <tr>
           <td><code>right</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code><a class="autorefs autorefs-internal" title="mlproject.decision_tree._node.Node" href="#mlproject.decision_tree._node.Node">Node</a>, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>the right child of this Node also of class Node, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -718,9 +731,19 @@
         <tr>
           <td><code>majority_class</code></td>
           <td>
-                <code>_type_, optional</code>
+                <code>int, optional</code>
           </td>
-          <td><p><em>description</em>, by default None</p></td>
+          <td><p>The majority class in this node, only if this Node is a leaf, by default None</p></td>
+          <td>
+                <code>None</code>
+          </td>
+        </tr>
+        <tr>
+          <td><code>class_probs</code></td>
+          <td>
+                <code>1d ndarray, optional</code>
+          </td>
+          <td><p>An array of class probabilities for this node, only if this Node is a leaf, by default None</p></td>
           <td>
                 <code>None</code>
           </td>
@@ -755,30 +778,50 @@
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;_summary_</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Node object for building a decision tree.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    feature : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    threshold : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    left : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    right : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
-<span class="sd">    majority_class : _type_, optional</span>
-<span class="sd">        _description_, by default None</span>
+<span class="sd">    feature : int index, optional</span>
+<span class="sd">        index of the best feature for splitting this Node, by default None</span>
+<span class="sd">    threshold : float, optional</span>
+<span class="sd">        the threshold for the best split of the data, by default None</span>
+<span class="sd">    left : Node, optional</span>
+<span class="sd">        the left child of this Node also of class Node, by default None</span>
+<span class="sd">    right : Node, optional</span>
+<span class="sd">        the right child of this Node also of class Node, by default None</span>
+<span class="sd">    majority_class : int, optional</span>
+<span class="sd">        The majority class in this node, only if this Node is a leaf, by default None</span>
+<span class="sd">    class_probs : 1d ndarray, optional</span>
+<span class="sd">        An array of class probabilities for this node, only if this Node is a leaf, by default None</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">*</span><span class="p">,</span><span class="n">majority_class</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">left</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">right</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="o">*</span><span class="p">,</span><span class="n">majority_class</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">class_probs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">feature</span> <span class="o">=</span> <span class="n">feature</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">threshold</span> <span class="o">=</span> <span class="n">threshold</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">left</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">majority_class</span> <span class="o">=</span> <span class="n">majority_class</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">class_probs</span> <span class="o">=</span> <span class="n">class_probs</span>
 
 
     <span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            True if this Node is a leaf node, otherwise False</span>
+<span class="sd">        &quot;&quot;&quot;</span>        
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">majority_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 </code></pre></div></td></tr></table></div>
         </details>
@@ -794,6 +837,63 @@
 
 
 
+
+<div class="doc doc-object doc-function">
+
+
+
+<h3 id="mlproject.decision_tree._node.Node.is_leaf" class="doc doc-heading">
+<code class="highlight language-python"><span class="n">is_leaf</span><span class="p">()</span></code>
+
+<a href="#mlproject.decision_tree._node.Node.is_leaf" class="headerlink" title="Permanent link">⚓︎</a></h3>
+
+
+  <div class="doc doc-contents ">
+  
+      <p>Returns True if this Node is a leaf node, otherwise False</p>
+
+  <p><strong>Returns:</strong></p>
+  <table>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr>
+          <td>
+                <code>bool</code>
+          </td>
+          <td><p>True if this Node is a leaf node, otherwise False</p></td>
+        </tr>
+    </tbody>
+  </table>
+
+      <details class="quote">
+        <summary>Source code in <code>mlproject/decision_tree/_node.py</code></summary>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span>
+<span class="normal">36</span>
+<span class="normal">37</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if this Node is a leaf node, otherwise False</span>
+<span class="sd">    &quot;&quot;&quot;</span>        
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">majority_class</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+</code></pre></div></td></tr></table></div>
+      </details>
+  </div>
+
+</div>
 
 
 

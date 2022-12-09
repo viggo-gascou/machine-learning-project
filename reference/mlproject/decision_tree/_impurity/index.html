@@ -714,9 +714,7 @@
 
       <details class="quote">
         <summary>Source code in <code>mlproject/decision_tree/_impurity.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
 <span class="normal">27</span>
@@ -730,7 +728,12 @@
 <span class="normal">35</span>
 <span class="normal">36</span>
 <span class="normal">37</span>
-<span class="normal">38</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">entropy_impurity</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<span class="normal">38</span>
+<span class="normal">39</span>
+<span class="normal">40</span>
+<span class="normal">41</span>
+<span class="normal">42</span>
+<span class="normal">43</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">entropy_impurity</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculates the entropy of a given node</span>
 
 <span class="sd">    Parameters</span>
@@ -743,10 +746,13 @@
 <span class="sd">    float</span>
 <span class="sd">        entropy impurity of a given node</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-07</span>
+    <span class="c1"># flatten the array only because np.bincount expects a 1 dimensional array</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">counts</span> <span class="o">/</span> <span class="n">N</span>
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="n">p</span><span class="o">+</span><span class="n">epsilon</span><span class="p">))</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
@@ -827,7 +833,9 @@
 <span class="normal">17</span>
 <span class="normal">18</span>
 <span class="normal">19</span>
-<span class="normal">20</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">gini_impurity</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">gini_impurity</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculates the gini impurity of a given node</span>
 
 <span class="sd">    Parameters</span>
@@ -840,6 +848,8 @@
 <span class="sd">    float</span>
 <span class="sd">        gini impurity score for the node</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># flatten the array only because np.bincount expects a 1 dimensional array</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
     <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">bincount</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
     <span class="n">N</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
     <span class="n">p</span> <span class="o">=</span> <span class="n">counts</span><span class="o">/</span><span class="n">N</span>
