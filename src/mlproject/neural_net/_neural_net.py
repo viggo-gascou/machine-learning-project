@@ -3,10 +3,9 @@ from mlproject.neural_net._dense_layer import DenseLayer
 from mlproject.helpers import accuracy_score
 from mlproject.neural_net._loss import cross_entropy_loss
 from mlproject.neural_net._activations import leaky_relu_der
-from rich.progress import Progress, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn, TimeRemainingColumn, SpinnerColumn
-from typing import Union
 from sklearn.preprocessing import OneHotEncoder
 
+from rich.progress import Progress, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn, TimeRemainingColumn, SpinnerColumn
 progress = Progress(TextColumn("[progress.description]{task.description}"), SpinnerColumn(), BarColumn(),
         TaskProgressColumn(), TimeElapsedColumn(), TimeRemainingColumn())
 
