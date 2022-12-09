@@ -14,6 +14,8 @@ def gini_impurity(y):
     float
         gini impurity score for the node
     """
+    # flatten the array only because np.bincount expects a 1 dimensional array
+    y = y.flatten()
     counts = np.bincount(y)
     N = np.sum(counts)
     p = counts/N
@@ -32,7 +34,10 @@ def entropy_impurity(y):
     float
         entropy impurity of a given node
     """
+    epsilon = 1e-07
+    # flatten the array only because np.bincount expects a 1 dimensional array
+    y = y.flatten()
     counts = np.bincount(y)
     N = np.sum(counts)
     p = counts / N
-    return np.sum(-p*np.log2(p))
+    return np.sum(-p*np.log2(p+epsilon))
