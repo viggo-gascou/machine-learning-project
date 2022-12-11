@@ -663,7 +663,7 @@
   
       <p>Compute the categorical cross entropy loss
 from the given true labels and predicted labels.</p>
-<p>We add <span class="arithmatex">\(1\mathrm{e}{-7}\)</span> (epsilon) to the prediction to avoid taking the log of <span class="arithmatex">\(0\)</span> </p>
+<p>We add <span class="arithmatex">\(1\mathrm{e}{-7}\)</span> (epsilon) to the prediction to avoid taking the log of <span class="arithmatex">\(0\)</span></p>
 <ul>
 <li>Inspired by keras implemenation:
 <a href="https://github.com/keras-team/keras/blob/master/keras/backend.py#L5487-L5547">Keras implementation</a> where
@@ -724,8 +724,7 @@ epsilon is defined <a href="https://github.com/keras-team/keras/blob/master/kera
 
       <details class="quote">
         <summary>Source code in <code>mlproject/neural_net/_loss.py</code></summary>
-        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 3</span>
-<span class="normal"> 4</span>
+        <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 4</span>
 <span class="normal"> 5</span>
 <span class="normal"> 6</span>
 <span class="normal"> 7</span>
@@ -748,11 +747,12 @@ epsilon is defined <a href="https://github.com/keras-team/keras/blob/master/kera
 <span class="normal">24</span>
 <span class="normal">25</span>
 <span class="normal">26</span>
-<span class="normal">27</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cross_entropy_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+<span class="normal">27</span>
+<span class="normal">28</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">cross_entropy_loss</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the categorical cross entropy loss</span>
 <span class="sd">    from the given true labels and predicted labels.</span>
 
-<span class="sd">    We add $1\mathrm{e}{-7}$ (epsilon) to the prediction to avoid taking the log of $0$ </span>
+<span class="sd">    We add $1\mathrm{e}{-7}$ (epsilon) to the prediction to avoid taking the log of $0$</span>
 
 <span class="sd">    - Inspired by keras implemenation:</span>
 <span class="sd">    [Keras implementation](https://github.com/keras-team/keras/blob/master/keras/backend.py#L5487-L5547) where</span>
@@ -772,7 +772,7 @@ epsilon is defined <a href="https://github.com/keras-team/keras/blob/master/kera
 <span class="sd">        Cross entropy score for the given prediction</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-07</span>
-    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_pred</span><span class="o">+</span><span class="n">epsilon</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_true</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">+</span> <span class="n">epsilon</span><span class="p">)</span> <span class="o">*</span> <span class="n">y_true</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
       </details>
   </div>
