@@ -18,8 +18,9 @@ def gini_impurity(y):
     y = y.flatten()
     counts = np.bincount(y)
     N = np.sum(counts)
-    p = counts/N
+    p = counts / N
     return 1 - np.sum(p**2)
+
 
 def entropy_impurity(y):
     """Calculates the entropy of a given node
@@ -40,4 +41,4 @@ def entropy_impurity(y):
     counts = np.bincount(y)
     N = np.sum(counts)
     p = counts / N
-    return np.sum(-p*np.log2(p+epsilon))
+    return np.sum(-p * np.log2(p + epsilon))

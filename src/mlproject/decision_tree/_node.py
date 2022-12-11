@@ -1,5 +1,6 @@
 import numpy as np
 
+
 class Node:
     """Node object for building a decision tree.
 
@@ -18,13 +19,13 @@ class Node:
     class_probs : 1d ndarray, optional
         An array of class probabilities for this node, only if this Node is a leaf, by default None
     """
-    def __init__(self, left=None, right=None, feature=None, threshold=None,*,majority_class=None,class_probs=None):
+
+    def __init__(self, left=None, right=None, feature=None, threshold=None, *,majority_class=None,class_probs=None):
         self.feature = feature
         self.threshold = threshold
         self.left, self.right = left, right
         self.majority_class = majority_class
         self.class_probs = class_probs
-        
 
     def is_leaf(self):
         """Returns True if this Node is a leaf node, otherwise False
@@ -33,5 +34,6 @@ class Node:
         -------
         bool
             True if this Node is a leaf node, otherwise False
-        """        
+        """
+
         return self.majority_class is not None

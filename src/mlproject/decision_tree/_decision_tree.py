@@ -1,15 +1,31 @@
 import numpy as np
 from mlproject.decision_tree._impurity import gini_impurity, entropy_impurity
 from mlproject.decision_tree._node import Node
-from rich.progress import Progress, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn, TimeRemainingColumn, SpinnerColumn
-progress = Progress(TextColumn("[progress.description]{task.description}"), SpinnerColumn(), BarColumn(),
-        TaskProgressColumn(), TimeElapsedColumn(), TimeRemainingColumn())
+
+from rich.progress import (
+    Progress,
+    TextColumn,
+    BarColumn,
+    TaskProgressColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+    SpinnerColumn,
+)
+
+progress = Progress(
+    TextColumn("[progress.description]{task.description}"),
+    SpinnerColumn(),
+    BarColumn(),
+    TaskProgressColumn(),
+    TimeElapsedColumn(),
+    TimeRemainingColumn(),
+)
 
 
 class DecisionTreeClassifier:
     """Decision Tree Classifier
 
-    Simple decision tree classifier with user specific impurity, max depth and 
+    Simple decision tree classifier with user specific impurity, max depth and
     minimum number of samples in leaf nodes.
 
     Parameters
@@ -21,15 +37,16 @@ class DecisionTreeClassifier:
     min_samples_in_leaf : int, optional
         The minimum number of samples that need to be in a leaf, by default 2
     """
-    def __init__(self, criterion='gini', max_depth=100, min_samples_in_leaf=2):
+
+    def __init__(self, criterion="gini", max_depth=100, min_samples_in_leaf=2):
 
         self.max_depth = max_depth
         self.min_samples_in_leaf = min_samples_in_leaf
         self.root = None
 
-        if criterion.lower() == 'gini':
+        if criterion.lower() == "gini":
             self.criterion = gini_impurity
-        elif criterion.lower() == 'entropy':
+        elif criterion.lower() == "entropy":
             self.criterion = entropy_impurity
 
     def fit(self, X, y):
@@ -43,12 +60,12 @@ class DecisionTreeClassifier:
             An array of the true labels for the data points
         """
         with progress as pb:
-            t1 = pb.add_task('[blue]Training', total=1)
-        
+            t1 = pb.add_task("[blue]Training", total=1)
+
             self.root = self._grow(X, y)
             pb.update(t1, advance=1)
             if progress.finished:
-                    pb.update(t1, description="[bright_green]Training complete!")
+                pb.update(t1, description="[bright_green]Training complete!")
 
     def predict(self, X):
         """Predict class labels for the given data.
@@ -60,14 +77,14 @@ class DecisionTreeClassifier:
         ----------
         X : 2d ndarray
             The data that we want to use to make predictions.
-        
+
         Returns
         -------
         1d ndarray
             All predicted class labels with size n, where n is the number of data points.
-        """        
+        """
         return np.array([self._traverse(datapoint, self.root) for datapoint in X])
-    
+
     def predict_proba(self, X):
         """Predict class probabilities for the given data
 
@@ -78,15 +95,17 @@ class DecisionTreeClassifier:
         ----------
         X : 2d ndarray
             The data that we want to use to make predictions
-        
+
         Returns
         -------
         2d ndarray
             All probabilites with size n x k, where n is the number of data points and k is the number classes
         """
 
-        return np.array([self._traverse(datapoint, self.root, prob=True) for datapoint in X])
-        
+        return np.array(
+            [self._traverse(datapoint, self.root, prob=True) for datapoint in X]
+        )
+
     def _grow(self, X, y, cur_depth=0):
         """Grows a decision tree from the given data.
         This is the part that is doing the actual fitting of the decision tree.
@@ -105,17 +124,21 @@ class DecisionTreeClassifier:
         Node
             A new node of class Node with new left and right children.
         """
-        
+
         self.n, self.p = X.shape
         node_unique_classes = np.unique(y)
         self.node_k = len(node_unique_classes)
-        
-        if (cur_depth >= self.max_depth or self.node_k == 1 or self.n < self.min_samples_in_leaf ):
 
-            most_common = self._most_common_label(y, prob = False)
-            class_probs = self._most_common_label(y, prob = True)
+        if (
+            cur_depth >= self.max_depth
+            or self.n < self.min_samples_in_leaf
+            or self.node_k == 1
+        ):
+
+            most_common = self._most_common_label(y, prob=False)
+            class_probs = self._most_common_label(y, prob=True)
             return Node(majority_class=most_common, class_probs=class_probs)
-        
+
         cur_depth += 1
 
         best_feature, best_threshold = self._best_split(X, y)
@@ -123,12 +146,10 @@ class DecisionTreeClassifier:
         left_idxs = np.argwhere(X[:, best_feature] <= best_threshold).flatten()
         right_idxs = np.argwhere(X[:, best_feature] > best_threshold).flatten()
 
-
         left = self._grow(X[left_idxs, :], y[left_idxs], cur_depth)
         right = self._grow(X[right_idxs, :], y[right_idxs], cur_depth)
-        
-        return Node(left, right, best_feature, best_threshold)
 
+        return Node(left, right, best_feature, best_threshold)
 
     def _best_split(self, X, y):
         """Calculates the best split of a node with the given data points
@@ -139,7 +160,7 @@ class DecisionTreeClassifier:
             The data points to consider for splitting this node
         y : 2d ndarray
             The true labels to consider for splitting this node
-            
+
         Returns
         -------
         tuple
@@ -186,7 +207,7 @@ class DecisionTreeClassifier:
 
         if len(left_idxs) == 0 or len(right_idxs) == 0:
             return 0
-        
+
         n = len(y)
         left_prob = len(left_idxs) / n
         right_prob = len(right_idxs) / n
@@ -194,12 +215,12 @@ class DecisionTreeClassifier:
         left_impurity = self.criterion(y[left_idxs])
         right_impurity = self.criterion(y[right_idxs])
 
-        weighted_impurity = (left_prob * left_impurity + right_prob * right_impurity)
+        weighted_impurity = left_prob * left_impurity + right_prob * right_impurity
 
         information_gain = parent_impurity - weighted_impurity
         return information_gain
- 
-    def _traverse(self, X, node, prob = False):
+
+    def _traverse(self, X, node, prob=False):
         """Traverses the tree until it reaches a leaf node and returns either the majority
         class of that node or the class probabilities if prob is True.
 
@@ -229,8 +250,7 @@ class DecisionTreeClassifier:
         elif X[node.feature] > node.threshold:
             return self._traverse(X, node.right)
 
-
-    def _most_common_label(self, y, prob = False):
+    def _most_common_label(self, y, prob=False):
         """Calculates the most common label of a leaf node or the class probabilities
 
         Parameters
@@ -248,8 +268,10 @@ class DecisionTreeClassifier:
 
         uniques, counts = np.unique(y, return_counts=True)
         label_counts = dict(zip(uniques, counts))
-        sorted_keys = list(sorted(label_counts.items(), key = lambda x : x[1], reverse=True))
-        
+        sorted_keys = list(
+            sorted(label_counts.items(), key=lambda x: x[1], reverse=True)
+        )
+
         if prob:
             n = np.sum(counts)
             return np.array([label_counts[i] / n for i in uniques])

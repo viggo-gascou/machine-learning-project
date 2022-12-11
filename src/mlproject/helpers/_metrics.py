@@ -1,7 +1,8 @@
 import numpy as np
 
+
 def accuracy_score(y_true, y_pred, normalize=True):
-    """Calculate the accuracy score from a given array of true labels 
+    """Calculate the accuracy score from a given array of true labels
     and a given array of predicted labels.
 
     Inspired by [https://stackoverflow.com/a/64680660](https://stackoverflow.com/a/64680660)
@@ -22,18 +23,20 @@ def accuracy_score(y_true, y_pred, normalize=True):
     ------
     ValueError
         if y_true and y_pred are not of the same shape
-    """    
+    """
 
     if y_true.shape[0] != y_pred.shape[0] and y_true.shape[1] != y_pred.shape[1]:
-        raise ValueError(f"Length of y_true: ({len(y_true)}) and y_pred: ({len(y_pred)}) should be the same!")
-    
-    accuracy=[]
+        raise ValueError(
+            f"Length of y_true: ({len(y_true)}) and y_pred: ({len(y_pred)}) should be the same!"
+        )
+
+    accuracy = []
     for i in range(len(y_pred)):
-        if y_pred[i]==y_true[i]:
+        if y_pred[i] == y_true[i]:
             accuracy.append(1)
         else:
             accuracy.append(0)
-    if normalize==True:
+    if normalize == True:
         return np.mean(accuracy)
-    if normalize==False:
+    if normalize == False:
         return sum(accuracy)

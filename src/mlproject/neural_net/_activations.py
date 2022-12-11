@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def leaky_relu(z):
     """Leaky relu activation function
 
@@ -15,6 +16,7 @@ def leaky_relu(z):
     """
     return np.where(z > 0, z, z * 0.01)
 
+
 def leaky_relu_der(z):
     """Derivative of the leaky relu activation function
 
@@ -29,6 +31,7 @@ def leaky_relu_der(z):
         derivative of the specific neuron with a leaky relu activation function
     """
     return np.where(z > 0, 1, 0.01)
+
 
 def stable_softmax(z):
     """Numerically stable softmax activation function

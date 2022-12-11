@@ -5,10 +5,24 @@ from mlproject.neural_net._loss import cross_entropy_loss
 from mlproject.neural_net._activations import leaky_relu_der
 from sklearn.preprocessing import OneHotEncoder
 
-from rich.progress import Progress, TextColumn, BarColumn, TaskProgressColumn, TimeElapsedColumn, TimeRemainingColumn, SpinnerColumn
-progress = Progress(TextColumn("[progress.description]{task.description}"), SpinnerColumn(), BarColumn(),
-        TaskProgressColumn(), TimeElapsedColumn(), TimeRemainingColumn())
+from rich.progress import (
+    Progress,
+    TextColumn,
+    BarColumn,
+    TaskProgressColumn,
+    TimeElapsedColumn,
+    TimeRemainingColumn,
+    SpinnerColumn,
+)
 
+progress = Progress(
+    TextColumn("[progress.description]{task.description}"),
+    SpinnerColumn(),
+    BarColumn(),
+    TaskProgressColumn(),
+    TimeElapsedColumn(),
+    TimeRemainingColumn(),
+)
 
 
 class NeuralNetworkClassifier:
@@ -37,9 +51,10 @@ class NeuralNetworkClassifier:
         Number of data points (X.shape[0])
     p : int
         Number of features (X.shape[1])
-    """        
-    def __init__(self, layers = [], loss = 'cross_entropy'):
-        
+    """
+
+    def __init__(self, layers=[], loss="cross_entropy"):
+
         self.X = None
         self.n, self.p = None, None
         self.y = None
@@ -47,11 +62,13 @@ class NeuralNetworkClassifier:
         self.layers = layers
         self.activations, self.sums = [], []
 
-        if loss == 'cross_entropy':
-            self.loss_str = 'cross_entropy_loss'
+        if loss == "cross_entropy":
+            self.loss_str = "cross_entropy_loss"
             self.loss = cross_entropy_loss
         else:
-            raise NotImplementedError(f"{loss} not implemented yet. Choose from ['cross_entropy']") 
+            raise NotImplementedError(
+                f"{loss} not implemented yet. Choose from ['cross_entropy']"
+            )
 
     def add(self, layer: DenseLayer):
         """Add a new layer to the network, after the current layer.
@@ -68,15 +85,15 @@ class NeuralNetworkClassifier:
         >>> NN.add(DenseLayer(784,128,"leaky_relu"))
         >>> NN.add(DenseLayer(128,5,"softmax"))
         >>> print(NN)
-        
-        NeuralNetworkClassifier 
+
+        NeuralNetworkClassifier
         --------------------------------
         Loss function: cross_entropy_loss
 
-        Input layer: 
+        Input layer:
                 Input: 784, Output: 128 , Activation: leaky_relu
 
-        Output layer: 
+        Output layer:
                 Input: 128, Output: 5 , Activation: softmax
         ```
         """
@@ -89,7 +106,7 @@ class NeuralNetworkClassifier:
         ----------
         X : 2d ndarray
             The data to use for the forward pass.
-            Must be of size n x input_n 
+            Must be of size n x input_n
             where input_n must come from the first [`DenseLayer`][mlproject.neural_net._dense_layer.DenseLayer] in the network.
 
         Returns
@@ -114,7 +131,7 @@ class NeuralNetworkClassifier:
         ----------
         X : 2d ndarray
             The data that we want to use to make predictions.
-        
+
         Returns
         -------
         1d ndarray
@@ -122,7 +139,9 @@ class NeuralNetworkClassifier:
         """
         probabilities = self.predict_proba(X)
 
-        return np.array([self.label[pred] for pred in np.argmax(probabilities, axis=1).astype(int)])
+        return np.array(
+            [self.label[pred] for pred in np.argmax(probabilities, axis=1).astype(int)]
+        )
 
     def predict_proba(self, X):
         """Predict class probabilities for the given data
@@ -131,7 +150,7 @@ class NeuralNetworkClassifier:
         ----------
         X : 2d ndarray
             The data that we want to use to make predictions
-        
+
         Returns
         -------
         2d ndarray
@@ -139,7 +158,7 @@ class NeuralNetworkClassifier:
         """
         return self.forward(X)
 
-    def fit(self, X, y, batches: int = 1, epochs:int = 1000, lr:float = 0.01):
+    def fit(self, X, y, batches: int = 1, epochs: int = 1000, lr: float = 0.01):
         r"""The actual training of the network to the given data
 
         Parameters
@@ -158,8 +177,8 @@ class NeuralNetworkClassifier:
             The number of iterations to train for
         lr : float, optional
             The learning rate for gradient descent
-        """        
-        
+        """
+
         self.X = X
         self.n, self.p = self.X.shape
         self.y = y
@@ -170,16 +189,19 @@ class NeuralNetworkClassifier:
 
         one_hot = OneHotEncoder(categories=[unique_classes])
         self.y_hot_encoded = one_hot.fit_transform(self.y).toarray()
-        
+
         if self.layers[-1].out_neurons() != self.k:
-            raise ValueError(f"The number of neurons in the output layer, output_n: ({self.layers[-1].out_neurons()}) must be equal to the number of classes, k: ({self.k})")
+            raise ValueError(
+                f"The number of neurons in the output layer, output_n: ({self.layers[-1].out_neurons()}) must be equal to the number of classes, k: ({self.k})"
+            )
         if self.layers[0].in_neurons() != self.X.shape[1]:
-            raise ValueError(f"The number of neurons in the input layer, input_n: ({self.layers[0].in_neurons()}) must be equal to the number features in the dataset: ({self.X.shape[1]})")
+            raise ValueError(
+                f"The number of neurons in the input layer, input_n: ({self.layers[0].in_neurons()}) must be equal to the number features in the dataset: ({self.X.shape[1]})"
+            )
 
         # populate label-intcode dictionaries
         self.label = {k: unique_classes[k] for k in range(self.k)}
-        self.intcode = {unique_classes[k]:k for k in range(self.k)}
-        
+        self.intcode = {unique_classes[k]: k for k in range(self.k)}
 
         self.loss_history = []
         self.accuracy_history = []
@@ -188,40 +210,38 @@ class NeuralNetworkClassifier:
         idxs = np.arange(self.n)
 
         with progress as pb:
-            t1 = pb.add_task('[blue]Training', total=epochs)
+            t1 = pb.add_task("[blue]Training", total=epochs)
 
             for epoch in range(epochs):
-                
-                # randomly shuffle the data --> split it into number of batches 
-                    # here np.array_split returns an array of arrays of indices 
-                    # of the different splits
+
+                # randomly shuffle the data --> split it into number of batches
+                # here np.array_split returns an array of arrays of indices
+                # of the different splits
                 np.random.shuffle(idxs)
                 batch_idxs = np.array_split(idxs, batches)
 
                 for batch in batch_idxs:
-                    
+
                     X_batch = self.X[batch]
                     y_batch = self.y_hot_encoded[batch]
 
                     # compute the initial class probabilities by doing a single forward pass
-                        # note: this should come 'automatically' from defining the last layer
-                        # in the model as a layer with output_n = k with softmax activation
-                        # where k is the number of classes.
+                    # note: this should come 'automatically' from defining the last layer
+                    # in the model as a layer with output_n = k with softmax activation
+                    # where k is the number of classes.
                     init_probs = self.forward(X_batch)
-                    
+
                     # dividide by the number of data points in this specific batch to get the average loss.
                     loss = self.loss(y_batch, init_probs) / len(y_batch)
 
-                    
                     self.backward(y_batch)
 
-                    
                 # add the latest loss to the history
                 self.loss_history.append(loss)
 
                 # predict with the current weights and biases on the whole data set
                 batch_predict = self.predict(self.X)
-                
+
                 # calculate the accuracy score of the prediction
                 train_accuracy = accuracy_score(self.y, batch_predict)
 
@@ -230,7 +250,7 @@ class NeuralNetworkClassifier:
 
                 # update rich progress bar for each epoch
                 pb.update(t1, advance=1)
-            
+
                 if progress.finished:
                     pb.update(t1, description="[bright_green]Training complete!")
 
@@ -247,42 +267,45 @@ class NeuralNetworkClassifier:
         delta = self.activations[-1] - y_batch
 
         grad_bias = delta.sum(0)
-        
+
         grad_weight = self.activations[-2].T @ delta
 
         grad_biases, grad_weights = [], []
         grad_weights.append(grad_weight)
         grad_biases.append(grad_bias)
 
-        for i in range(2, len(self.layers)+1):
-            layer = self.layers[-i+1]
+        for i in range(2, len(self.layers) + 1):
+            layer = self.layers[-i + 1]
             dzda = delta @ layer.weights.T
             delta = dzda * leaky_relu_der(self.sums[-i])
 
             grad_bias = delta.sum(0)
-            grad_weight = self.activations[-i-1].T @ delta
+            grad_weight = self.activations[-i - 1].T @ delta
             grad_weights.append(grad_weight)
             grad_biases.append(grad_bias)
-        
+
         # reverse the gradient lists so we can index them normally.
         grad_biases_rev = list(reversed(grad_biases))
         grad_weights_rev = list(reversed(grad_weights))
 
         for i in range(0, len(self.layers)):
-            self.layers[i].weights -= (self.learning_rate * grad_weights_rev[i])
-            self.layers[i].biases -= (self.learning_rate * grad_biases_rev[i])
+            self.layers[i].weights -= self.learning_rate * grad_weights_rev[i]
+            self.layers[i].biases -= self.learning_rate * grad_biases_rev[i]
 
     def __str__(self):
-        s = '\nNeuralNetworkClassifier \n'
-        s += '--------------------------------\n'
-        s += f'Loss function: {self.loss_str}\n\n'
+        s = "\nNeuralNetworkClassifier \n"
+        s += "--------------------------------\n"
+        s += f"Loss function: {self.loss_str}\n\n"
         layers = [self.layers[i] for i in range(0, len(self.layers))]
-        layers_neu = [f"\tInput: {i.input_n}, Output: {i.output_n} , Activation: {i.activation_function()}"for i in layers]
+        layers_neu = [
+            f"\tInput: {i.input_n}, Output: {i.output_n} , Activation: {i.activation_function()}"
+            for i in layers
+        ]
         layer_num = 0
         for layer in layers_neu:
             if layer_num == 0:
                 s += "Input layer: \n" + layer + "\n\n"
-            elif layer_num == len(self.layers) -1:
+            elif layer_num == len(self.layers) - 1:
                 s += f"Output layer: \n" + layer
             else:
                 s += f"Layer: {layer_num}\n" + layer + "\n\n"

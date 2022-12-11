@@ -14,24 +14,26 @@ class DenseLayer:
     activation : str
         The activation function to use for all of the neurons in the DenseLayer, either 'leaky_relu' or 'softmax'
     """
+
     def __init__(self, input_n: int, output_n: int, activation: str):
         # he initiliasation of weights and biases
         # see https://keras.io/api/layers/initializers/#henormal-class
         self.output_n, self.input_n = output_n, input_n
         stddev = np.sqrt(2 / input_n)
-        self.weights = np.random.normal(loc = 0, scale = stddev, size=(input_n, output_n))
+        self.weights = np.random.normal(loc=0, scale=stddev, size=(input_n, output_n))
         self.z = None
 
         self.biases = np.zeros(shape=(output_n))
 
-        if activation == 'leaky_relu':
+        if activation == "leaky_relu":
             self.activation = leaky_relu
-        elif activation == 'softmax' or activation == 'stable_softmax':
+        elif activation == "softmax" or activation == "stable_softmax":
             self.activation = stable_softmax
         else:
-            raise NotImplementedError(f"{activation} not implemented yet. Choose from ['leaky_relu', 'stable_softmax']")
+            raise NotImplementedError(
+                f"{activation} not implemented yet. Choose from ['leaky_relu', 'stable_softmax']"
+            )
 
-            
     def forward(self, X):
         """Computes a single forward pass of the DenseLayer
 
@@ -57,7 +59,7 @@ class DenseLayer:
         -------
         int
             The total number of output neurons in the DenseLayer
-        """        
+        """
         return self.output_n
 
     def in_neurons(self):
@@ -67,7 +69,7 @@ class DenseLayer:
         -------
         int
             The total number of input neurons in the DenseLayer
-        """        
+        """
         return self.input_n
 
     def activation_function(self):
@@ -79,7 +81,6 @@ class DenseLayer:
             string representing the activation function of the given DenseLayer
         """
         if self.activation == stable_softmax:
-            return 'softmax'
+            return "softmax"
         elif self.activation == leaky_relu:
-            return 'leaky_relu'
-    
+            return "leaky_relu"
