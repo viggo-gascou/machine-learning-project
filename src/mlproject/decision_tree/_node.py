@@ -20,7 +20,16 @@ class Node:
         An array of class probabilities for this node, only if this Node is a leaf, by default None
     """
 
-    def __init__(self, left=None, right=None, feature=None, threshold=None, *,majority_class=None,class_probs=None):
+    def __init__(
+        self,
+        left=None,
+        right=None,
+        feature=None,
+        threshold=None,
+        *,
+        majority_class=None,
+        class_probs=None
+    ):
         self.feature = feature
         self.threshold = threshold
         self.left, self.right = left, right

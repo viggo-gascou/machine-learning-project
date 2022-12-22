@@ -59,6 +59,10 @@ class DecisionTreeClassifier:
         y : 2d ndarray
             An array of the true labels for the data points
         """
+
+        # for use in calculating the _most_common_label to get counts even if class not present in leaf
+        self.classes = np.unique(y)
+
         with progress as pb:
             t1 = pb.add_task("[blue]Training", total=1)
 
@@ -83,7 +87,9 @@ class DecisionTreeClassifier:
         1d ndarray
             All predicted class labels with size n, where n is the number of data points.
         """
-        return np.array([self._traverse(datapoint, self.root) for datapoint in X])
+        return np.array(
+            [self._traverse(datapoint, self.root, prob=False) for datapoint in X]
+        )
 
     def predict_proba(self, X):
         """Predict class probabilities for the given data
@@ -101,7 +107,6 @@ class DecisionTreeClassifier:
         2d ndarray
             All probabilites with size n x k, where n is the number of data points and k is the number classes
         """
-
         return np.array(
             [self._traverse(datapoint, self.root, prob=True) for datapoint in X]
         )
@@ -241,14 +246,14 @@ class DecisionTreeClassifier:
 
         if node.is_leaf():
             if prob:
-                return np.argmax(node.class_probs)
+                return node.class_probs
             return node.majority_class
 
         if X[node.feature] <= node.threshold:
-            return self._traverse(X, node.left)
+            return self._traverse(X, node.left, prob)
 
         elif X[node.feature] > node.threshold:
-            return self._traverse(X, node.right)
+            return self._traverse(X, node.right, prob)
 
     def _most_common_label(self, y, prob=False):
         """Calculates the most common label of a leaf node or the class probabilities
@@ -265,15 +270,12 @@ class DecisionTreeClassifier:
         int or bool
             Depending on `prob` it either returns the majority class or the class probabilities
         """
-
-        uniques, counts = np.unique(y, return_counts=True)
-        label_counts = dict(zip(uniques, counts))
-        sorted_keys = list(
-            sorted(label_counts.items(), key=lambda x: x[1], reverse=True)
-        )
+        # flatten y because np.bincount() expects a 1d array
+        y = y.flatten()
+        counts = np.bincount(y, minlength=len(self.classes))
+        n = np.sum(counts)
 
         if prob:
-            n = np.sum(counts)
-            return np.array([label_counts[i] / n for i in uniques])
+            return counts / n
 
-        return sorted_keys[0][0]
+        return np.argmax(counts)
