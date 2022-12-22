@@ -16,19 +16,31 @@ class DenseLayer:
     """
 
     def __init__(self, input_n: int, output_n: int, activation: str):
-        # he initiliasation of weights and biases
-        # see https://keras.io/api/layers/initializers/#henormal-class
+
         self.output_n, self.input_n = output_n, input_n
-        stddev = np.sqrt(2 / input_n)
-        self.weights = np.random.normal(loc=0, scale=stddev, size=(input_n, output_n))
+
         self.z = None
 
         self.biases = np.zeros(shape=(output_n))
 
         if activation == "leaky_relu":
             self.activation = leaky_relu
+            # He initiliasation of weights
+            # see https://keras.io/api/layers/initializers/#henormal-class
+            stddev = np.sqrt(2 / input_n)
+            self.weights = np.random.normal(
+                loc=0, scale=stddev, size=(input_n, output_n)
+            )
+
         elif activation == "softmax" or activation == "stable_softmax":
+            # Glorot/Xavier initiliasation of weights and biases
+            # see https://keras.io/api/layers/initializers/#glorotnormal-class
+            stddev = np.sqrt(2 / (input_n + output_n))
+            self.weights = np.random.normal(
+                loc=0, scale=stddev, size=(input_n, output_n)
+            )
             self.activation = stable_softmax
+
         else:
             raise NotImplementedError(
                 f"{activation} not implemented yet. Choose from ['leaky_relu', 'stable_softmax']"
@@ -49,10 +61,10 @@ class DenseLayer:
             An n x output_n numpy array where n is the number of samples
             and output_n is the number of neurons in the DenseLayer
         """
-        self.z = X @ self.weights + self.biases
+        self.z = X.dot(self.weights) + self.biases
         return self.activation(self.z)
 
-    def out_neurons(self):
+    def _out_neurons(self):
         """Return the number of output neurons in the DenseLayer
 
         Returns
@@ -62,7 +74,7 @@ class DenseLayer:
         """
         return self.output_n
 
-    def in_neurons(self):
+    def _in_neurons(self):
         """Return the number of input neurons in the DenseLayer
 
         Returns

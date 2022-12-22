@@ -190,11 +190,11 @@ class NeuralNetworkClassifier:
         one_hot = OneHotEncoder(categories=[unique_classes])
         self.y_hot_encoded = one_hot.fit_transform(self.y).toarray()
 
-        if self.layers[-1].out_neurons() != self.k:
+        if self.layers[-1]._out_neurons() != self.k:
             raise ValueError(
                 f"The number of neurons in the output layer, output_n: ({self.layers[-1].out_neurons()}) must be equal to the number of classes, k: ({self.k})"
             )
-        if self.layers[0].in_neurons() != self.X.shape[1]:
+        if self.layers[0]._in_neurons() != self.X.shape[1]:
             raise ValueError(
                 f"The number of neurons in the input layer, input_n: ({self.layers[0].in_neurons()}) must be equal to the number features in the dataset: ({self.X.shape[1]})"
             )
@@ -230,11 +230,19 @@ class NeuralNetworkClassifier:
                     # in the model as a layer with output_n = k with softmax activation
                     # where k is the number of classes.
                     init_probs = self.forward(X_batch)
+                    if np.isnan(init_probs).any() or np.isinf(init_probs).any():
+                        raise ValueError(
+                            f"Unexpected value for init_probs, please try different parameters for either `batches`, `epocs` or `lr`"
+                        )
 
                     # dividide by the number of data points in this specific batch to get the average loss.
                     loss = self.loss(y_batch, init_probs) / len(y_batch)
+                    if np.isnan(loss) or np.isinf(loss):
+                        raise ValueError(
+                            f"Unexpected value for loss, please try different parameters for either `batches`, `epocs` or `lr`"
+                        )
 
-                    self.backward(y_batch)
+                    self._backward(y_batch)
 
                 # add the latest loss to the history
                 self.loss_history.append(loss)
@@ -254,7 +262,7 @@ class NeuralNetworkClassifier:
                 if progress.finished:
                     pb.update(t1, description="[bright_green]Training complete!")
 
-    def backward(self, y_batch):
+    def _backward(self, y_batch):
         """Computes a single backward pass all the way through the network.
         as well as updating the weights and biases.
 

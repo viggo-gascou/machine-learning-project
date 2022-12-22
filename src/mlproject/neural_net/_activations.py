@@ -51,6 +51,7 @@ def stable_softmax(z):
     """
     # When keepdims is set to True we keep the original dimensions/shape of the input.
     # axis = 1 means that we find the maximum value along the first axis i.e. the rows.
-    e = z - np.amax(z, axis=1, keepdims=True)
+    e_max = np.amax(z, axis=1, keepdims=True)
+    e = np.subtract(z, e_max)
     e = np.exp(e)
     return e / np.sum(e, axis=1, keepdims=True)
