@@ -2,7 +2,7 @@ import os
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), "../.."))
+ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
 
 
 def data_loader(raw=True, scaled=False, pca=False):
