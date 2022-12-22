@@ -26,8 +26,11 @@ documentation = "https://viggo-gascou.github.io/machine-learning-project/"
 repository = "https://github.com/viggo-gascou/machine-learning-project"
 
 
-[tool.tool.setuptools.packages.find]
-where = ["."]  # ["."] by default
+[tool.setuptools.packages.find]
+where = ["src"]  # ["."] by default
 include = ["mlproject*"]  # ["*"] by default
-exclude = ["tests*", "data*"]  # empty by default
+exclude = ["test*"]
 
+
+[tool.setuptools.package-data]
+"mlproject" = ["data/*.npy"]
