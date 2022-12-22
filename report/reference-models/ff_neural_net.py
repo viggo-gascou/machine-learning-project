@@ -9,6 +9,7 @@ import numpy as np
 from torchvision import transforms
 from torch.autograd import Variable
 
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 X_train, X_test, y_train, y_test = data_loader(raw=False,scaled=True)
@@ -40,27 +41,32 @@ class ModelDataset(Dataset):
 # you can also define the batch size and whether
 # to shuffle the data after each epoch
 training = ModelDataset(X_train,y_train)
-trainloader = DataLoader(training, batch_size=1, shuffle=True)
+test = ModelDataset(X_test, y_test)
+testloader = DataLoader(test, batch_size=1, shuffle=True)
+trainloader = DataLoader(training, batch_size=100, shuffle=True)
 
 
 class Net(nn.Module):
     def __init__(self):
         super().__init__()
-        self.fc1 = nn.Linear(784, 4)
-        self.fc2 = nn.Linear(4, 5)
-        self.activation = nn.Sigmoid()
+        self.fc1 = nn.Linear(784, 32)
+        self.fc2 = nn.Linear(32, 16)
+        self.fc3 = nn.Linear(16, 5)
+        self.leaky = nn.LeakyReLU()
+        self.soft = nn.Softmax(dim=1)
 
     def forward(self, x):
-        x = self.activation(self.fc1(x))
-        x = self.activation(self.fc2(x))
+        x = self.leaky(self.fc1(x))
+        x = self.leaky(self.fc2(x))
+        x = self.soft(self.fc3(x))
         return x
 
 clf = Net()
 
 criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(clf.parameters(), lr=0.1)
+optimizer = optim.SGD(clf.parameters(), lr=0.001)
 
-epochs = 20
+epochs = 75
 for epoch in range(epochs):
 
     running_loss = 0.0
@@ -80,7 +86,7 @@ for epoch in range(epochs):
         # print statistics
         running_loss += loss.item()
         if i % 100 == 99:    # print every 100 mini-batches
-            #print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 100:.8f}')
+            print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 100:.8f}')
             running_loss = 0.0
 
 print('Finished Training')
@@ -96,7 +102,7 @@ def evaluate(model, data_loader):
         output = model(test_imgs)
         predicted = torch.max(output,1)[1]
         correct += (predicted == test_labels).sum()
-    print("Accuracy: {:.3f}% ".format( float(correct) / len(data_loader)*100))                           
+    print("Accuracy: {:.3f}% ".format( float(correct) / len(data_loader)))                           
 
 
 
