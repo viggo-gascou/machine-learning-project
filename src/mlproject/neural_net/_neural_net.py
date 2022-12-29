@@ -272,6 +272,7 @@ class NeuralNetworkClassifier:
             array of one-hot encoded ground_truth labels
         """
 
+        # This is the derivative of loss function w.r.t Z. Explanation here https://www.mldawn.com/back-propagation-with-cross-entropy-and-softmax/
         delta = self.activations[-1] - y_batch
 
         grad_bias = delta.sum(0)
