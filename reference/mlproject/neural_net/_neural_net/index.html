@@ -1095,7 +1095,8 @@ or added individually with the <a class="autorefs autorefs-internal" href="#mlpr
 <span class="normal">319</span>
 <span class="normal">320</span>
 <span class="normal">321</span>
-<span class="normal">322</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NeuralNetworkClassifier</span><span class="p">:</span>
+<span class="normal">322</span>
+<span class="normal">323</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">NeuralNetworkClassifier</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;NeuralNetworkClassifier</span>
 
 <span class="sd">    Feed Forward Neural Network Classifier with however many</span>
@@ -1342,6 +1343,7 @@ or added individually with the <a class="autorefs autorefs-internal" href="#mlpr
 <span class="sd">            array of one-hot encoded ground_truth labels</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
+        <span class="c1"># This is the derivative of loss function w.r.t Z. Explanation here https://www.mldawn.com/back-propagation-with-cross-entropy-and-softmax/</span>
         <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activations</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">y_batch</span>
 
         <span class="n">grad_bias</span> <span class="o">=</span> <span class="n">delta</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
