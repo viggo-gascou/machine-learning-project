@@ -1,15 +1,18 @@
 import os
+print("\nImporting libraries (may take some time) ...\n")
 from scripts import train_custom_nn, train_custom_dt, train_keras_cnn
 
 # Gets current working directory
 path = os.getcwd()
 
 # Joins the folder that we wanted to create
-folder_name = 'results'
-path = os.path.join(path, folder_name) 
+folder_names = ['custom_NN', 'custom_DT', 'keras_CNN']
+path = os.path.join(path, 'results') 
 
 # Create the results folder 
 os.makedirs(path, exist_ok=True)
+for folder in folder_names:
+    os.makedirs(os.path.join(path, folder), exist_ok=True)
 
 def guided_training(model, description):
 

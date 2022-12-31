@@ -70,22 +70,30 @@ def train_keras_cnn():
     print("\nFinal training accuracy: ",accuracy_score(y_train_SS, y_pred_train_labels),"\n")
 
     answer = input(f'Do you want to create and save the classification report? (y/n) ')  
-    if answer == 'y' or answer == 'Y':  
-        report = classification_report(y_test_SS, y_pred_labels)
-        print(report)
-        report = pd.DataFrame(classification_report(y_test_SS, y_pred_labels, output_dict=True)).transpose()
-        report.to_csv("results/keras_CNN_classification_report.csv")
+    if answer == 'y' or answer == 'Y':
+        test_report = classification_report(y_test_SS, y_pred_labels, target_names=classes)
+        train_report = classification_report(y_train_SS, y_pred_train_labels, target_names=classes)
+        print("\nClassification report for training data")
+        print(train_report)
+        print("Classification report for test data")
+        print(test_report)
+        test_report = pd.DataFrame(classification_report(y_test_SS, y_pred_labels, output_dict=True, target_names=classes)).transpose()
+        train_report = pd.DataFrame(classification_report(y_train_SS, y_pred_train_labels, output_dict=True, target_names=classes)).transpose()
+        test_report.to_csv("results/keras_CNN/test_classification_report.csv")
+        train_report.to_csv("results/keras_CNN/train_classification_report.csv")
 
     answer = input(f'Do you want to create and save a plot of training accuracy and loss history? (y/n) ')  
     if answer == 'y' or answer == 'Y':
+        sns.set_style("darkgrid")
         hist = history.history
         acc_hist, loss_hist = hist['accuracy'], hist['loss']
         epochs = np.arange(len(loss_hist))+1
-        plt.plot(epochs, acc_hist)
-        plt.plot(epochs, loss_hist, c = 'r')
+        _, ax = plt.subplots(figsize=(8,8))
+        ax.plot(epochs, acc_hist)
+        ax.plot(epochs, loss_hist, c = 'r')
         plt.title("Keras CNN Training Accuracy and Loss History")
         plt.xlabel("Epoch")
-        plt.savefig("results/keras_CNN_training_hist.png")
+        plt.savefig("results/keras_CNN/training_hist.png")
         plt.show()
 
     answer = input(f'Do you want to create and save a confusion matrix? (y/n) ')  
@@ -93,9 +101,10 @@ def train_keras_cnn():
         sns.set_style('white')
         cm = confusion_matrix(y_test_SS, y_pred_labels)
         disp = ConfusionMatrixDisplay(cm, display_labels = classes)
-        disp.plot()
+        _, ax = plt.subplots(figsize=(8,8))
+        disp.plot(ax=ax)
         plt.title("Keras CNN Confusion Matrix")
-        plt.savefig("results/keras_CNN_confusion_matrix.png")
+        plt.savefig("results/keras_CNN/confusion_matrix.png")
         plt.show()
 
 

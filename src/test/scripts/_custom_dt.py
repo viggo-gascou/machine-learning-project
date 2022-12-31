@@ -23,17 +23,24 @@ def train_custom_dt():
 
 
     DT.fit(X_train_PCA, y_train_PCA)
-    print("\nFinal training accuracy: ",accuracy_score(y_train_PCA, DT.predict(X_train_PCA)),"\n")
     
     y_preds = DT.predict(X_test_PCA)
+    y_train_preds = DT.predict(X_train_PCA)
+    print("\nFinal training accuracy: ",accuracy_score(y_train_PCA, y_train_preds),"\n")
 
 
     answer = input(f'Do you want to create and save the classification report? (y/n) ')  
     if answer == 'y' or answer == 'Y':  
-        report = classification_report(y_test_PCA, y_preds)
-        print(report)
-        report = pd.DataFrame(classification_report(y_test_PCA, y_preds, output_dict=True)).transpose()
-        report.to_csv("results/custom_DT_classification_report.csv")
+        test_report = classification_report(y_test_PCA, y_preds, target_names=classes)
+        train_report = classification_report(y_train_PCA, y_train_preds, target_names=classes)
+        print("Classification report for training data")
+        print(train_report)
+        print("Classification report for test data")
+        print(test_report)
+        test_report = pd.DataFrame(classification_report(y_test_PCA, y_preds, output_dict=True, target_names=classes)).transpose()
+        train_report = pd.DataFrame(classification_report(y_train_PCA, y_train_preds, output_dict=True, target_names=classes)).transpose()
+        test_report.to_csv("results/custom_DT_test_classification_report.csv")
+        train_report.to_csv("results/custom_DT_train_classification_report.csv")
         
     answer = input(f'Do you want to create and save a confusion matrix? (y/n) ')  
     if answer == 'y' or answer == 'Y':  

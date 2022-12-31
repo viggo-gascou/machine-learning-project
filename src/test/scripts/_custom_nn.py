@@ -24,28 +24,35 @@ def train_custom_nn():
     NN.add(DenseLayer(16,5,"softmax"))
 
     NN.fit(X_train_SS, y_train_SS, batches=100, epochs=75, lr=0.001)
-    print("\nFinal training accuracy: ",accuracy_score(y_train_SS, NN.predict(X_train_SS)),"\n")
 
-
+    y_train_preds = NN.predict(X_train_SS)
     y_preds = NN.predict(X_test_SS)
+    print("\nFinal training accuracy: ",accuracy_score(y_train_SS, y_train_SS),"\n")
 
     answer = input(f'Do you want to create and save the classification report? (y/n) ')  
     if answer == 'y' or answer == 'Y':  
-        report = classification_report(y_test_SS, y_preds)
-        print(report)
-        report = pd.DataFrame(classification_report(y_test_SS, y_preds, output_dict=True)).transpose()
-        report.to_csv("results/custom_NN_classification_report.csv")
+        test_report = classification_report(y_test_SS, y_preds, target_names=classes)
+        train_report = classification_report(y_train_SS, y_train_preds, target_names=classes)
+        print("\nClassification report for training data")
+        print(train_report)
+        print("Classification report for test data")
+        print(test_report)
+        test_report = pd.DataFrame(classification_report(y_test_SS, y_preds, output_dict=True, target_names=classes)).transpose()
+        train_report = pd.DataFrame(classification_report(y_train_SS, y_train_preds, output_dict=True, target_names=classes)).transpose()
+        test_report.to_csv("results/custom_NN/test_classification_report.csv")
+        train_report.to_csv("results/custom_NN/train_classification_report.csv")
 
     answer = input(f'Do you want to create and save a plot of training accuracy and loss history? (y/n) ')  
     if answer == 'y' or answer == 'Y':  
         acc_hist = NN.accuracy_history
         loss_hist = NN.loss_history
         epochs = np.arange(len(loss_hist))+1
-        plt.plot(epochs, acc_hist)
-        plt.plot(epochs, loss_hist, c = 'r')
+        _, ax = plt.subplots(figsize=(8,8))
+        ax.plot(epochs, acc_hist)
+        ax.plot(epochs, loss_hist, c = 'r')
         plt.title("Custom NN Training Accuracy and Loss History")
         plt.xlabel("Epoch")
-        plt.savefig("results/custom_NN_training_hist.png")
+        plt.savefig("results/custom_NN/training_hist.png")
         plt.show()
 
     answer = input(f'Do you want to create and save a confusion matrix? (y/n) ')  
@@ -53,9 +60,10 @@ def train_custom_nn():
         sns.set_style('white')
         cm = confusion_matrix(y_test_SS, y_preds)
         disp = ConfusionMatrixDisplay(cm, display_labels = classes)
-        disp.plot()
+        _, ax = plt.subplots(figsize=(8,8))
+        disp.plot(ax=ax)
         plt.title("Custom NN Confusion Matrix")
-        plt.savefig("results/custom_NN_confusion_matrix.png")
+        plt.savefig("results/custom_NN/confusion_matrix.png")
         plt.show()
 
 
