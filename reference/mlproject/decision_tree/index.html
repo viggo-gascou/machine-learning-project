@@ -8,8 +8,14 @@
       
       
       
+      
+        <link rel="prev" href="../neural_net/_neural_net/">
+      
+      
+        <link rel="next" href="_decision_tree/">
+      
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.10">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.0">
     
     
       
@@ -17,11 +23,10 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.975780f9.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.f79797b0.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
-        
       
       
 
@@ -111,8 +116,6 @@
       <form class="md-header__option" data-md-component="palette">
         
           
-          
-          
           <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
           
             <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
@@ -120,8 +123,6 @@
             </label>
           
         
-          
-          
           
           <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
           
@@ -592,6 +593,7 @@
                   
 
 
+
   <h1>decision_tree</h1>
 
 <div class="doc doc-object doc-module">
@@ -933,7 +935,7 @@ minimum number of samples in leaf nodes.</p>
 <span class="normal">279</span>
 <span class="normal">280</span>
 <span class="normal">281</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">DecisionTreeClassifier</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Decision Tree Classifier</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Decision Tree Classifier</span>
 
 <span class="sd">    Simple decision tree classifier with user specific impurity, max depth and</span>
 <span class="sd">    minimum number of samples in leaf nodes.</span>
@@ -960,7 +962,7 @@ minimum number of samples in leaf nodes.</p>
             <span class="bp">self</span><span class="o">.</span><span class="n">criterion</span> <span class="o">=</span> <span class="n">entropy_impurity</span>
 
     <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Fit the decision tree to the given data</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit the decision tree to the given data</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -982,7 +984,7 @@ minimum number of samples in leaf nodes.</p>
                 <span class="n">pb</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">t1</span><span class="p">,</span> <span class="n">description</span><span class="o">=</span><span class="s2">&quot;[bright_green]Training complete!&quot;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Predict class labels for the given data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict class labels for the given data.</span>
 
 <span class="sd">        For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
 <span class="sd">        and return the majority class of that leaf node.</span>
@@ -1002,7 +1004,7 @@ minimum number of samples in leaf nodes.</p>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Predict class probabilities for the given data</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict class probabilities for the given data</span>
 
 <span class="sd">        For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
 <span class="sd">        and return the class probabilities of that leaf node.</span>
@@ -1022,7 +1024,7 @@ minimum number of samples in leaf nodes.</p>
         <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_grow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cur_depth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Grows a decision tree from the given data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Grows a decision tree from the given data.</span>
 <span class="sd">        This is the part that is doing the actual fitting of the decision tree.</span>
 
 <span class="sd">        Parameters</span>
@@ -1067,7 +1069,7 @@ minimum number of samples in leaf nodes.</p>
         <span class="k">return</span> <span class="n">Node</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">best_feature</span><span class="p">,</span> <span class="n">best_threshold</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_best_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculates the best split of a node with the given data points</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the best split of a node with the given data points</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1098,7 +1100,7 @@ minimum number of samples in leaf nodes.</p>
         <span class="k">return</span> <span class="n">split_idx</span><span class="p">,</span> <span class="n">split_thresh</span>
 
     <span class="k">def</span> <span class="nf">_information_gain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">feature_col</span><span class="p">,</span> <span class="n">split_thresh</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculates the information gain of a node with the given data labels</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the information gain of a node with the given data labels</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1136,7 +1138,7 @@ minimum number of samples in leaf nodes.</p>
         <span class="k">return</span> <span class="n">information_gain</span>
 
     <span class="k">def</span> <span class="nf">_traverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">node</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Traverses the tree until it reaches a leaf node and returns either the majority</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Traverses the tree until it reaches a leaf node and returns either the majority</span>
 <span class="sd">        class of that node or the class probabilities if prob is True.</span>
 
 <span class="sd">        Parameters</span>
@@ -1166,7 +1168,7 @@ minimum number of samples in leaf nodes.</p>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_traverse</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">node</span><span class="o">.</span><span class="n">right</span><span class="p">,</span> <span class="n">prob</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_most_common_label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculates the most common label of a leaf node or the class probabilities</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the most common label of a leaf node or the class probabilities</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1275,7 +1277,7 @@ minimum number of samples in leaf nodes.</p>
 <span class="normal">70</span>
 <span class="normal">71</span>
 <span class="normal">72</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Fit the decision tree to the given data</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Fit the decision tree to the given data</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1380,7 +1382,7 @@ and return the majority class of that leaf node.</p>
 <span class="normal">90</span>
 <span class="normal">91</span>
 <span class="normal">92</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Predict class labels for the given data.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predict class labels for the given data.</span>
 
 <span class="sd">    For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
 <span class="sd">    and return the majority class of that leaf node.</span>
@@ -1483,7 +1485,7 @@ and return the class probabilities of that leaf node.</p>
 <span class="normal">110</span>
 <span class="normal">111</span>
 <span class="normal">112</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">predict_proba</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Predict class probabilities for the given data</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Predict class probabilities for the given data</span>
 
 <span class="sd">    For all data points in the dataset traverse the decision tree until it reaches a leaf node</span>
 <span class="sd">    and return the class probabilities of that leaf node.</span>
@@ -1653,7 +1655,7 @@ and return the class probabilities of that leaf node.</p>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span> <span class="nc">Node</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Node object for building a decision tree.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Node object for building a decision tree.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -1688,7 +1690,7 @@ and return the class probabilities of that leaf node.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">class_probs</span> <span class="o">=</span> <span class="n">class_probs</span>
 
     <span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -1756,7 +1758,7 @@ and return the class probabilities of that leaf node.</p>
 <span class="normal">46</span>
 <span class="normal">47</span>
 <span class="normal">48</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span> <span class="nf">is_leaf</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Returns True if this Node is a leaf node, otherwise False</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1808,42 +1810,6 @@ and return the class probabilities of that leaf node.</p>
       
         <footer class="md-footer">
   
-    
-    <nav class="md-footer__inner md-grid" aria-label="Footer" >
-      
-        
-        <a href="../neural_net/_neural_net/" class="md-footer__link md-footer__link--prev" aria-label="Previous: _neural_net" rel="prev">
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
-          </div>
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Previous
-              </span>
-              _neural_net
-            </div>
-          </div>
-        </a>
-      
-      
-        
-        <a href="_decision_tree/" class="md-footer__link md-footer__link--next" aria-label="Next: _decision_tree" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              _decision_tree
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
-      
-    </nav>
-  
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
@@ -1865,10 +1831,10 @@ and return the class probabilities of that leaf node.</p>
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.sections", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.top", "navigation.sections", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.12658920.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5a2dcb6a.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.5cf534bf.min.js"></script>
       
         <script src="../../../javascripts/mathjax.js"></script>
       
@@ -1876,7 +1842,6 @@ and return the class probabilities of that leaf node.</p>
       
         <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
-    
     
   </body>
 </html>
