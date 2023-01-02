@@ -1,109 +1,61 @@
-from mlproject.helpers import data_loader
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-import torch.utils.data
-from torch.utils.data import DataLoader, TensorDataset, Dataset
-from torch import optim, tensor
 import numpy as np
-from torchvision import transforms
-from torch.autograd import Variable
+from mlproject.helpers import data_loader, accuracy_score
+from sklearn.preprocessing import OneHotEncoder
+
+import tensorflow as tf
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.callbacks import EarlyStopping
+from keras.optimizers import Adam, SGD
+
+from sklearn.metrics import classification_report
 
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
-X_train, X_test, y_train, y_test = data_loader(raw=False,scaled=True)
-
-# Training
-X_train = tensor(X_train).float()
-y_train = tensor(y_train).long()
-
-# Test
-X_test = tensor(X_test).float()
-
-y_train = y_train.reshape(-1)
-y_test = y_test.reshape(-1)
-
-# We first need to define class with the following
-# structure that essentially serves as an iterator
-# over the given dataset
-class ModelDataset(Dataset):
-    def __init__(self,x,y):
-        self.x = x
-        self.y = y
-    def __getitem__(self,idx):
-        return self.x[idx], self.y[idx]
-    
-    def __len__(self):
-        return len(self.x)
-
-# Next, we define the dataloader, note that
-# you can also define the batch size and whether
-# to shuffle the data after each epoch
-training = ModelDataset(X_train,y_train)
-test = ModelDataset(X_test, y_test)
-testloader = DataLoader(test, batch_size=1, shuffle=True)
-trainloader = DataLoader(training, batch_size=100, shuffle=True)
-
-
-class Net(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.fc1 = nn.Linear(784, 32)
-        self.fc2 = nn.Linear(32, 16)
-        self.fc3 = nn.Linear(16, 5)
-        self.leaky = nn.LeakyReLU()
-        self.soft = nn.Softmax(dim=1)
-
-    def forward(self, x):
-        x = self.leaky(self.fc1(x))
-        x = self.leaky(self.fc2(x))
-        x = self.soft(self.fc3(x))
-        return x
-
-clf = Net()
-
-criterion = nn.CrossEntropyLoss()
-optimizer = optim.SGD(clf.parameters(), lr=0.001)
-
-epochs = 75
-for epoch in range(epochs):
-
-    running_loss = 0.0
-    for i, data in enumerate(trainloader, 0):
-        # get the inputs; data is a list of [inputs, labels]
-        inputs, labels = data
-
-        # zero the parameter gradients
-        optimizer.zero_grad()
-
-        # forward + backward + optimize
-        outputs = clf(inputs)
-        loss = criterion(outputs, labels)
-        loss.backward()
-        optimizer.step()
-
-        # print statistics
-        running_loss += loss.item()
-        if i % 100 == 99:    # print every 100 mini-batches
-            print(f'[{epoch + 1}, {i + 1:5d}] loss: {running_loss / 100:.8f}')
-            running_loss = 0.0
-
-print('Finished Training')
-
-def evaluate(model, data_loader):
-    if torch.cuda.is_available():
-        model.cuda()
-        model.eval()
-    correct = 0 
-    for test_imgs, test_labels in data_loader:
-        if torch.cuda.is_available():
-            test_imgs, test_labels = test_imgs.cuda(), test_labels.cuda()
-        output = model(test_imgs)
-        predicted = torch.max(output,1)[1]
-        correct += (predicted == test_labels).sum()
-    print("Accuracy: {:.3f}% ".format( float(correct) / len(data_loader)))                           
+X_train_SS, X_test_SS, y_train_SS, y_test_SS = data_loader(raw=False, scaled=True)
+classes = (["T-shirt/top", "Trouser", "Pullover", "Dress", "Shirt"])
 
 
 
-evaluate(clf, trainloader)
+# populate label-intcode dictionaries
+unique_classes = np.unique(y_train_SS)
+k = len(unique_classes)
+label = {k: unique_classes[k] for k in range(k)}
+intcode = {unique_classes[k]: k for k in range(k)}
+
+one_hot = OneHotEncoder(categories=[unique_classes])
+y_train_hot = one_hot.fit_transform(y_train_SS).toarray()
+y_test_hot = one_hot.fit_transform(y_test_SS).toarray()
+
+
+model = Sequential()
+model.add(tf.keras.Input(shape=(784,)))
+model.add(Dense(128, input_dim=X_train_SS.shape[1], activation='relu', kernel_initializer='HeNormal'))
+model.add(Dense(32, input_dim=128, activation='relu', kernel_initializer='HeNormal'))
+model.add(Dense(16, input_dim=32, activation='relu', kernel_initializer='HeNormal'))
+model.add(Dense(5, input_dim=16, activation='softmax', name='output', kernel_initializer='GlorotNormal'))
+
+
+model.compile(loss='categorical_crossentropy',
+                optimizer= Adam(0.0001), 
+                metrics=['accuracy'])
+print("\n")
+model.summary()
+
+print("\nTRAINING\n")
+history = model.fit(X_train_SS, y_train_hot,
+            batch_size=100,
+            epochs=75,
+            verbose=2
+) 
+
+print("\nPREDICTING\n")
+y_pred = model.predict(X_test_SS)
+y_pred_labels = np.argmax(y_pred, axis=1)
+
+
+y_train_pred = model.predict(X_train_SS)
+y_pred_train_labels = np.argmax(y_train_pred, axis=1)
+print("\nFinal training accuracy: ", accuracy_score(y_train_SS, y_pred_train_labels),"\n")
+print("Test acc:",accuracy_score(y_test_SS, y_pred_labels))
+
+print()
