@@ -5,6 +5,12 @@ from mlproject.neural_net._activations import leaky_relu, stable_softmax
 class DenseLayer:
     """Fully connected layer of a neural network
 
+    The weight initialisations are dependant on the activation function.
+
+    * If the activation function is LeakyReLU, then the weights are initialised from a He-Normal distribution - see: http://proceedings.mlr.press/v9/glorot10a.html
+
+    * If the activation function is softmax, then the weights are initialised from a Glorot/Xavier normal distribution - see: https://arxiv.org/abs/1502.01852
+
     Parameters
     ----------
     input_n : int
@@ -33,7 +39,7 @@ class DenseLayer:
             )
 
         elif activation == "softmax" or activation == "stable_softmax":
-            # Glorot/Xavier initiliasation of weights and biases
+            # Glorot/Xavier initiliasation of weights
             # see https://keras.io/api/layers/initializers/#glorotnormal-class
             stddev = np.sqrt(2 / (input_n + output_n))
             self.weights = np.random.normal(
