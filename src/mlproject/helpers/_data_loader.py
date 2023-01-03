@@ -1,6 +1,5 @@
 import os
 import numpy as np
-from sklearn.preprocessing import StandardScaler
 
 ROOT_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), ".."))
 
@@ -30,13 +29,13 @@ def data_loader(raw=True, scaled=False, pca=False):
     2d ndarrays
         numpy data arrays in the order X_train, X_test, y_train, y_test.
     """
-    if raw:
+    if raw and not scaled and not pca:
         X_train, y_train = np.hsplit(
             np.load(f"{ROOT_DIR}/data/fashion_train.npy"), [-1]
         )
         X_test, y_test = np.hsplit(np.load(f"{ROOT_DIR}/data/fashion_test.npy"), [-1])
 
-    elif scaled and not raw:
+    elif scaled and not raw and not pca:
         X_train, y_train = np.hsplit(
             np.load(f"{ROOT_DIR}/data/fashion_train_scaled.npy"), [-1]
         )
@@ -55,5 +54,7 @@ def data_loader(raw=True, scaled=False, pca=False):
         )
         # converting the y_labels back to integers from floats to avoid issues
         y_train, y_test = y_train.astype(int), y_test.astype(int)
+    else:
+        raise ValueError("If raw, scaled or pca is True, then all other arguments must be False.")
 
     return X_train, X_test, y_train, y_test
