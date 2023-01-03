@@ -91,10 +91,10 @@ class NeuralNetworkClassifier:
         Loss function: cross_entropy_loss
 
         Input layer:
-                Input: 784, Output: 128 , Activation: leaky_relu
+                Neurons: 128 , Activation: leaky_relu
 
         Output layer:
-                Input: 128, Output: 5 , Activation: softmax
+                Neurons: 5 , Activation: softmax
         ```
         """
         self.layers.append(layer)
@@ -264,7 +264,7 @@ class NeuralNetworkClassifier:
 
     def _backward(self, y_batch):
         """Computes a single backward pass all the way through the network.
-        as well as updating the weights and biases.
+        Also updates the weights and biases.
 
         Parameters
         ----------
