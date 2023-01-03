@@ -10,9 +10,7 @@ authors = [
     { name = "Marie Haahr Petersen" }
 ]
 description = "Machine Learning Project"
-readme = "README.md"
 
-license = {file = "LICENSE"} 
 version = "1.0.0"
 requires-python = ">=3.9"
 dependencies = [
@@ -30,8 +28,8 @@ repository = "https://github.com/viggo-gascou/machine-learning-project"
 
 
 [tool.setuptools.packages.find]
-where = ["src"]  # ["."] by default
-include = ["mlproject*"]  # ["*"] by default
+where = ["src"]
+include = ["mlproject*"]
 
 [tool.setuptools.package-data]
 "mlproject" = ["data/*.npy"]
