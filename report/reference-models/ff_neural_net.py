@@ -2,9 +2,8 @@ import numpy as np
 from mlproject.helpers import data_loader, accuracy_score
 from sklearn.preprocessing import OneHotEncoder
 
-import tensorflow as tf
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, InputLayer
 from keras.callbacks import EarlyStopping
 from keras.optimizers import Adam, SGD
 
@@ -28,7 +27,7 @@ y_test_hot = one_hot.fit_transform(y_test_SS).toarray()
 
 
 model = Sequential()
-model.add(tf.keras.Input(shape=(784,)))
+model.add(InputLayer(input_shape=(784,)))
 model.add(Dense(128, input_dim=X_train_SS.shape[1], activation='relu', kernel_initializer='HeNormal'))
 model.add(Dense(32, input_dim=128, activation='relu', kernel_initializer='HeNormal'))
 model.add(Dense(16, input_dim=32, activation='relu', kernel_initializer='HeNormal'))
@@ -36,7 +35,7 @@ model.add(Dense(5, input_dim=16, activation='softmax', name='output', kernel_ini
 
 
 model.compile(loss='categorical_crossentropy',
-                optimizer= Adam(0.0001), 
+                optimizer= SGD(0.0001), 
                 metrics=['accuracy'])
 print("\n")
 model.summary()
