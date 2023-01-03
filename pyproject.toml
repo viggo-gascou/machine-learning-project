@@ -19,6 +19,9 @@ dependencies = [
     "numpy", 
     "rich", 
     "scikit-learn",
+    "matplotlib",
+    "pandas",
+    "seaborn",
 ]
 
 [project.urls]
@@ -29,8 +32,6 @@ repository = "https://github.com/viggo-gascou/machine-learning-project"
 [tool.setuptools.packages.find]
 where = ["src"]  # ["."] by default
 include = ["mlproject*"]  # ["*"] by default
-exclude = ["test*"]
-
 
 [tool.setuptools.package-data]
 "mlproject" = ["data/*.npy"]
