@@ -15,7 +15,7 @@
         <link rel="next" href="_activations/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.0">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.1">
     
     
       
@@ -23,7 +23,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.f79797b0.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.3bd4f189.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.2505c338.min.css">
@@ -1529,10 +1529,10 @@ or added individually with the <a class="autorefs autorefs-internal" href="_neur
 <span class="sd">        Loss function: cross_entropy_loss</span>
 
 <span class="sd">        Input layer:</span>
-<span class="sd">                Input: 784, Output: 128 , Activation: leaky_relu</span>
+<span class="sd">                Neurons: 128 , Activation: leaky_relu</span>
 
 <span class="sd">        Output layer:</span>
-<span class="sd">                Input: 128, Output: 5 , Activation: softmax</span>
+<span class="sd">                Neurons: 5 , Activation: softmax</span>
 <span class="sd">        ```</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
@@ -1702,7 +1702,7 @@ or added individually with the <a class="autorefs autorefs-internal" href="_neur
 
     <span class="k">def</span> <span class="nf">_backward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y_batch</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Computes a single backward pass all the way through the network.</span>
-<span class="sd">        as well as updating the weights and biases.</span>
+<span class="sd">        Also updates the weights and biases.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1822,10 +1822,10 @@ or added individually with the <a class="autorefs autorefs-internal" href="_neur
 <span class="n">Loss</span> <span class="n">function</span><span class="p">:</span> <span class="n">cross_entropy_loss</span>
 
 <span class="n">Input</span> <span class="n">layer</span><span class="p">:</span>
-        <span class="n">Input</span><span class="p">:</span> <span class="mi">784</span><span class="p">,</span> <span class="n">Output</span><span class="p">:</span> <span class="mi">128</span> <span class="p">,</span> <span class="n">Activation</span><span class="p">:</span> <span class="n">leaky_relu</span>
+        <span class="n">Neurons</span><span class="p">:</span> <span class="mi">128</span> <span class="p">,</span> <span class="n">Activation</span><span class="p">:</span> <span class="n">leaky_relu</span>
 
 <span class="n">Output</span> <span class="n">layer</span><span class="p">:</span>
-        <span class="n">Input</span><span class="p">:</span> <span class="mi">128</span><span class="p">,</span> <span class="n">Output</span><span class="p">:</span> <span class="mi">5</span> <span class="p">,</span> <span class="n">Activation</span><span class="p">:</span> <span class="n">softmax</span>
+        <span class="n">Neurons</span><span class="p">:</span> <span class="mi">5</span> <span class="p">,</span> <span class="n">Activation</span><span class="p">:</span> <span class="n">softmax</span>
 </code></pre></div>
 
       <details class="quote">
@@ -1878,10 +1878,10 @@ or added individually with the <a class="autorefs autorefs-internal" href="_neur
 <span class="sd">    Loss function: cross_entropy_loss</span>
 
 <span class="sd">    Input layer:</span>
-<span class="sd">            Input: 784, Output: 128 , Activation: leaky_relu</span>
+<span class="sd">            Neurons: 128 , Activation: leaky_relu</span>
 
 <span class="sd">    Output layer:</span>
-<span class="sd">            Input: 128, Output: 5 , Activation: softmax</span>
+<span class="sd">            Neurons: 5 , Activation: softmax</span>
 <span class="sd">    ```</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">layers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">layer</span><span class="p">)</span>
