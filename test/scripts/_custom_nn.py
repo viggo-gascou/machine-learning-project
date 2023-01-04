@@ -23,7 +23,7 @@ def train_custom_nn():
     NN.add(DenseLayer(32,16,"leaky_relu"))
     NN.add(DenseLayer(16,5,"softmax"))
 
-    NN.fit(X_train_SS, y_train_SS, batches=100, epochs=75, lr=0.001)
+    NN.fit(X_train_SS, y_train_SS, batches=100, epochs=75, lr=0.0001)
 
     y_train_preds = NN.predict(X_train_SS)
     y_preds = NN.predict(X_test_SS)

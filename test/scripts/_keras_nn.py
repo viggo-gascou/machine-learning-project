@@ -37,7 +37,7 @@ def train_keras_nn():
 
 
     model.compile(loss='categorical_crossentropy',
-                    optimizer= SGD(0.001), 
+                    optimizer= SGD(0.0001), 
                     metrics=['accuracy'])
     print("\n")
     model.summary()
