@@ -1,0 +1,35 @@
+\begin{algorithmic}
+    \STATE \begin{enumerate}[itemsep=0.3cm]
+        \item[] 
+        Let $\boldsymbol{\delta}$ denote the partial derivatives of the previous steps (starting from output layer) right before the weights and biases. E.g. $\boldsymbol{\delta}$ is the chain of previous derivatives up until a set of parameters $\boldsymbol{w}^{(i)}$ and $\boldsymbol{b}^{(i)}$, and would then be $\frac{\partial L}{\partial \boldsymbol{Z}^{(i+1)}}$. 
+        
+        \item[Step 1:] Compute the partial derivative of the linear combinations w.r.t the loss function in order to compute the gradients of the weights and biases in the last layer\\ 
+        \[
+        \boldsymbol{\delta} = \frac{\partial L}{\partial \boldsymbol{Z}^{(\ell)}} = \boldsymbol{a}^{(\ell)} - \boldsymbol{y}
+        \]
+        Gradients for the last set of weights and biases is then
+        \[
+            \frac{\partial L}{\partial \boldsymbol{w}^{(k)}} = \big(\boldsymbol{a}^{(l-1)}\big)^T\cdot\boldsymbol{\delta} \qquad \text{and} \qquad \frac{\partial L}{\partial \boldsymbol{b}^k} = \boldsymbol{\delta}
+        \]
+        \item[Step 2:]The second step is repeated $k-1$ times such that the gradients for $\boldsymbol{w}^{(k-1)},..., \boldsymbol{w}^{(1)}$ and $\boldsymbol{b}^{(k-1)},..., \boldsymbol{b}^{(1)}$ is computed. 
+        For each step $i\in\{1,2,..,k-1\}$  
+        \[
+            \frac{\partial L}{\partial \boldsymbol{Z}^{(\ell - i)}} = \boldsymbol{\delta}\cdot \big(\boldsymbol{w}^{(k-i+1)}\big)^T \odot f'(\boldsymbol{Z}^{(l-i)})
+        \]
+        Now we update $\boldsymbol{\delta}$ for the next set of parameters. 
+        \[
+            \boldsymbol{\delta} :=  \frac{\partial L}{\partial \boldsymbol{Z}^{(\ell - i)}} 
+        \]
+        \item[] Gradients for the weights and biases of layer $k-i$ is then
+        \[
+            \frac{\partial L}{\partial \boldsymbol{w}^{(k-i)}} = \big(\boldsymbol{a}^{(l-i-1)}\big)^T \cdot \boldsymbol{\delta} \qquad \text{and} \qquad \frac{\partial L}{\partial \boldsymbol{b}^{(k-i)}} = \boldsymbol{\delta}
+        \]
+        \item[Step 3:] When all the gradients have been computed all the weights and biases for all layers are then updated using the following general formula:
+        \[
+            \begin{aligned}
+            \boldsymbol{w} &:= \boldsymbol{w} - \alpha \cdot \frac{\partial L}{\partial\boldsymbol{w}} \\
+            \boldsymbol{b} &:= \boldsymbol{b} - \alpha \cdot \frac{\partial L}{\partial\boldsymbol{b}}
+            \end{aligned}
+        \]
+        \end{enumerate}
+\end{algorithmic}
