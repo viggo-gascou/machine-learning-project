@@ -11,9 +11,9 @@
 To reduce the computational cost of training the classifier, we 
 used a subset of the the extracted features from the principle 
 components analysis. We determined our features to be the first 
-$62$ principal components. We saw earlier that the first $62$ principal components had 
-a cumulative explained variance ratio of $90\%$. We found that a 
-CVR of $90\%$ was sufficient since it reduced the feature 
+$62$ principal components. We saw earlier that the first $62$ 
+principal components had a cumulative explained variance ratio of $90\%$. 
+We found that a CVR of $90\%$ was sufficient since it reduced the feature 
 dimensionality and thereby the cost of training while also 
 preserving most of the information from the original data set.
 This data set of $62$ standardised principal components from 
@@ -106,7 +106,7 @@ activation function.
 We standardised the input with the scikit-learn 
 \inlinecode{StandardScaler} instance before feeding it to the 
 network. We ran $75$ epochs with the training data split into 
-$100$ batches and a learning rate of $0.001$.
+$100$ batches and a learning rate of $0.0001$.
 
 
 \subsubsection{Results and Performance}
